@@ -51,15 +51,19 @@ export interface KankotriData {
   // Multiple ceremonies
   ceremonies: KankotriCeremony[];
   
-  // Venue
-  venue: {
-    name: string;
-    address: string;
-    city: string;
-    state: string;
-    pincode?: string;
-    mapUrl?: string;
-    phone?: string;
+  // Wedding details
+  wedding: {
+    date: Date;
+    time: string;
+    venue: {
+      name: string;
+      address: string;
+      city: string;
+      state?: string;
+      pincode?: string;
+      mapUrl?: string;
+      phone?: string;
+    };
   };
   
   // Family members (both sides)
