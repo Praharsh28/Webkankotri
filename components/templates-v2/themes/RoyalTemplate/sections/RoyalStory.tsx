@@ -11,79 +11,81 @@ interface RoyalStoryProps {
 
 export function RoyalStory({ howWeMet, proposal, timeline }: RoyalStoryProps) {
   return (
-    <section className="bg-white py-20 px-4">
-      <div className="container mx-auto max-w-4xl">
-        <ScrollTrigger animation="fade-up">
-          <h2 className="mb-12 text-center font-serif text-4xl font-bold text-purple-900 md:text-5xl">
-            Our Love Story
-          </h2>
+    <section className="bg-neutral-50 py-32 px-6">
+      <div className="container mx-auto max-w-5xl">
+        <ScrollTrigger animation="fade">
+          <div className="mb-20 text-center">
+            <p className="mb-4 text-[10px] uppercase tracking-[0.35em] text-neutral-400">
+              Chapter One
+            </p>
+            <h2 className="font-serif text-5xl font-light tracking-wide text-neutral-900 md:text-6xl">
+              Our Love Story
+            </h2>
+            <div className="mx-auto mt-8 h-px w-16 bg-amber-600/30" />
+          </div>
         </ScrollTrigger>
 
         <div className="space-y-16">
           {/* How We Met */}
-          <ScrollTrigger animation="fade-up">
-            <div className="rounded-lg bg-purple-50 p-8">
-              <h3 className="mb-4 font-serif text-2xl font-bold text-purple-900">
-                How We Met
-              </h3>
-              <p className="text-lg leading-relaxed text-gray-700">
+          <ScrollTrigger animation="fade" delay={0.2}>
+            <div className="mb-24">
+              <p className="mb-6 text-xs uppercase tracking-[0.3em] text-neutral-400">
+                How It Began
+              </p>
+              <p className="font-light leading-loose text-neutral-600 md:text-lg">
                 {howWeMet}
               </p>
             </div>
           </ScrollTrigger>
 
-          {/* Timeline */}
+          {/* Timeline - Refined luxury */}
           {timeline.length > 0 && (
-            <div>
-              <ScrollTrigger animation="fade-up">
-                <h3 className="mb-8 text-center font-serif text-3xl font-bold text-purple-900">
+            <div className="mb-24">
+              <ScrollTrigger animation="fade" delay={0.4}>
+                <p className="mb-12 text-center text-xs uppercase tracking-[0.3em] text-neutral-400">
                   Our Journey
-                </h3>
+                </p>
               </ScrollTrigger>
 
-              <StaggerChildren staggerDelay={0.2} animation="fade-left">
+              <div className="space-y-16">
                 {timeline.map((entry, index) => (
-                  <div key={index} className="mb-8 flex gap-6">
-                    <div className="flex flex-col items-center">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-600 text-white font-bold">
-                        {index + 1}
-                      </div>
-                      {index < timeline.length - 1 && (
-                        <div className="my-2 h-full w-1 bg-purple-300" />
-                      )}
-                    </div>
-                    <div className="flex-1 pb-8">
-                      <p className="mb-2 text-sm text-purple-600">
+                  <ScrollTrigger key={index} animation="fade" delay={0.1 * index}>
+                    <div className="border-l border-amber-600/20 pl-8">
+                      <p className="mb-2 text-xs tracking-wide text-neutral-400">
                         {entry.date.toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
                         })}
                       </p>
-                      <h4 className="mb-2 font-serif text-xl font-bold text-purple-900">
+                      <h4 className="mb-3 font-serif text-2xl font-light text-neutral-900">
                         {entry.title}
                       </h4>
-                      <p className="text-gray-700">{entry.description}</p>
+                      <p className="font-light leading-relaxed text-neutral-600">
+                        {entry.description}
+                      </p>
                       {entry.photo && (
-                        <img
-                          src={entry.photo}
-                          alt={entry.title}
-                          className="mt-4 h-48 w-full rounded-lg object-cover"
-                        />
+                        <div className="mt-6 border border-neutral-200 p-2">
+                          <img
+                            src={entry.photo}
+                            alt={entry.title}
+                            className="h-64 w-full object-cover"
+                          />
+                        </div>
                       )}
                     </div>
-                  </div>
+                  </ScrollTrigger>
                 ))}
-              </StaggerChildren>
+              </div>
             </div>
           )}
 
-          {/* Proposal */}
-          <ScrollTrigger animation="fade-up">
-            <div className="rounded-lg bg-gradient-to-br from-purple-600 to-pink-500 p-8 text-white">
-              <h3 className="mb-4 font-serif text-2xl font-bold">
+          {/* Proposal - Highlighted */}
+          <ScrollTrigger animation="fade" delay={0.6}>
+            <div className="border-t border-b border-neutral-200 py-16">
+              <p className="mb-6 text-center text-xs uppercase tracking-[0.3em] text-neutral-400">
                 The Proposal
-              </h3>
-              <p className="text-lg leading-relaxed">
+              </p>
+              <p className="mx-auto max-w-3xl text-center font-light leading-loose text-neutral-700 md:text-lg">
                 {proposal}
               </p>
             </div>
