@@ -128,6 +128,26 @@
     }
   }
 
+  /* V2 Animations for templates */
+  .animate-float-gentle {
+    animation: float-gentle 15s ease-in-out infinite;
+  }
+
+  @keyframes float-gentle {
+    0%, 100% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+      transform: translate(10px, -20px) rotate(5deg);
+    }
+    50% {
+      transform: translate(-5px, -40px) rotate(-3deg);
+    }
+    75% {
+      transform: translate(-15px, -20px) rotate(7deg);
+    }
+  }
+
   /* Container utilities */
   .container-responsive {
     @apply container mx-auto px-4 md:px-6 lg:px-8;
