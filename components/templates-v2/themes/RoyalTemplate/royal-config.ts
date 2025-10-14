@@ -8,36 +8,36 @@
 import type { TemplateConfig } from '@/types/v2/template';
 
 export const royalConfig: TemplateConfig = {
-  // Refined color palette - Elegant, emotionally resonant
+  // OLD MONEY AESTHETIC - 2025 luxury trends
   colors: {
-    primary: '#1a1a2e',      // Deep navy (sophistication, not harsh purple)
-    secondary: '#c9a961',    // Muted gold (luxury without garishness)
-    accent: '#efd9ce',       // Soft rose (warmth, romance)
-    background: '#0f0f1e',   // Almost black navy (elegance)
+    primary: '#0d1117',      // True black-navy (heritage, timeless)
+    secondary: '#d4af37',    // Classic gold (understated luxury)
+    accent: '#f5f5f0',       // Cream/ivory (soft, elegant)
+    background: '#0a0a0a',   // Pure black (drama, sophistication)
   },
 
-  // Typography
+  // Premium Typography Hierarchy
   fonts: {
-    heading: 'Playfair Display',  // Elegant serif
-    body: 'Inter',                 // Clean sans-serif
+    heading: 'Cormorant Garamond', // OLD MONEY serif (display)
+    body: 'Montserrat',            // Modern, clean sans-serif
   },
 
-  // Feature toggles - LESS IS MORE
+  // Minimal Features - Quiet Luxury
   features: {
-    videoBackground: true,   // Yes - sets ambiance
-    audioPlayer: false,      // No - let users decide on sound
-    particles: true,         // Yes but SUBTLE (fewer, slower)
-    fireworks: true,         // Yes - only on RSVP (earned moment)
-    parallax: false,         // No - too much movement
-    countdown: true,         // Yes - creates anticipation
+    videoBackground: true,   // Ambient only, very subtle
+    audioPlayer: false,      // No audio - user choice
+    particles: true,         // BARELY noticeable (5-8 only)
+    fireworks: true,         // RSVP celebration only
+    parallax: false,         // No - too distracting
+    countdown: true,         // Timeless countdown
   },
 
-  // Animation settings - SUBTLE & INTENTIONAL
+  // Ultra-Subtle Animations
   animations: {
-    particleCount: 20,               // Fewer! Just enough to notice (was 100)
-    particleSpeed: 'slow',           // Slow and elegant
-    particleEmojis: ['✨'],          // Just sparkles - simpler is better
-    parallaxSpeed: 0.3,              // Gentler if enabled
+    particleCount: 6,                // MINIMAL (just 6)
+    particleSpeed: 'slow',           // Very slow drift
+    particleEmojis: ['✨'],          // Tiny sparkles only
+    parallaxSpeed: 0.2,              // Barely noticeable
   },
 
   // Content

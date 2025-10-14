@@ -19,14 +19,14 @@ export function RoyalTemplate({ data }: RoyalTemplateProps) {
   const config = data.customization || royalConfig;
 
   return (
-    <div className="relative min-h-screen bg-gray-900">
+    <div className="relative min-h-screen bg-black">
       {/* Video Background */}
       {config.features.videoBackground && (
         <VideoBackground
           src={data.media.videoUrl || config.content.videoUrl || ''}
           mobileSrc={data.media.videoUrl}
-          overlay={0.4}
-          overlayColor="rgba(93, 26, 139, 0.5)"
+          overlay={0.7}
+          overlayColor="rgba(10, 10, 10, 0.7)"
           fallback={
             <div
               className="absolute inset-0"
