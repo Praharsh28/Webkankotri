@@ -159,6 +159,55 @@
     }
   }
 
+  /* Gold foil shimmer animation */
+  .animate-shimmer {
+    animation: shimmer 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* Paper texture overlay */
+  .paper-texture {
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(0,0,0,.02) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(0,0,0,.02) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(0,0,0,.01) 0%, transparent 30%);
+    background-size: 100% 100%, 80% 80%, 50% 50%;
+  }
+
+  /* Subtle glow effect */
+  .glow-gold {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+
+  .glow-red {
+    box-shadow: 0 0 15px rgba(196, 30, 58, 0.25);
+  }
+
+  /* Fade-in on scroll */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
   /* Container utilities */
   .container-responsive {
     @apply container mx-auto px-4 md:px-6 lg:px-8;

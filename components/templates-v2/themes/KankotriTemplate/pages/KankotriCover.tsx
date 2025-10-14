@@ -11,7 +11,10 @@
 'use client';
 
 import { ScrollTrigger } from '@/components/animations-v2';
-import { TraditionalBorder, FlowerCorner, OrnateDivider } from '../decorations/TraditionalBorder';
+import { OrnateDivider } from '../decorations/TraditionalBorder';
+import { EnhancedBorder, CornerDecoration } from '../decorations/EnhancedBorders';
+import { GoldFoilText, GoldFoilBorder } from '../effects/GoldFoilText';
+import { LotusMotif, DiyaMotif } from '../symbols/PremiumMotifs';
 
 interface KankotriCoverProps {
   groomName: string;
@@ -45,9 +48,15 @@ export function KankotriCover({
   });
 
   return (
-    <div className="relative min-h-screen bg-[#f5f5dc] py-12 px-6">
-      {/* Traditional palm leaf corners */}
-      <TraditionalBorder type="full" color={config.colors.primary} />
+    <div className="relative min-h-screen bg-[#f5f5dc] paper-texture py-12 px-6">
+      {/* Enhanced decorative borders with premium motifs */}
+      <EnhancedBorder type="mixed" position="corners" />
+      
+      {/* Decorative corner flourishes */}
+      <CornerDecoration position="top-left" />
+      <CornerDecoration position="top-right" />
+      <CornerDecoration position="bottom-left" />
+      <CornerDecoration position="bottom-right" />
 
       <div className="container mx-auto max-w-2xl">
         {/* Couple Photo with decorative frame */}
@@ -86,21 +95,29 @@ export function KankotriCover({
           </ScrollTrigger>
         )}
 
-        {/* Names */}
+        {/* Names with Gold Foil Effect */}
         <ScrollTrigger animation="fade" delay={0.4}>
           <div className="mb-8 text-center">
             <div className="mb-6">
-              <p className="mb-2 font-serif text-5xl font-light tracking-wider text-[#2d5016] md:text-6xl">
-                {groomName}
-              </p>
-              <div className="my-4 flex items-center justify-center gap-3">
-                <div className="h-px w-16 bg-[#d4af37]/50" />
-                <span className="font-serif text-2xl text-[#d4af37]">Weds</span>
-                <div className="h-px w-16 bg-[#d4af37]/50" />
+              <GoldFoilText intensity="strong">
+                <p className="mb-2 font-serif text-5xl font-light tracking-[0.1em] md:text-7xl">
+                  {groomName}
+                </p>
+              </GoldFoilText>
+              
+              <div className="my-6 flex items-center justify-center gap-4">
+                <LotusMotif size={40} color="#c41e3a" className="opacity-60" />
+                <GoldFoilText intensity="medium">
+                  <span className="font-serif text-3xl">Weds</span>
+                </GoldFoilText>
+                <LotusMotif size={40} color="#c41e3a" className="opacity-60 -scale-x-100" />
               </div>
-              <p className="font-serif text-5xl font-light tracking-wider text-[#2d5016] md:text-6xl">
-                {brideName}
-              </p>
+              
+              <GoldFoilText intensity="strong">
+                <p className="font-serif text-5xl font-light tracking-[0.1em] md:text-7xl">
+                  {brideName}
+                </p>
+              </GoldFoilText>
             </div>
           </div>
         </ScrollTrigger>
@@ -108,28 +125,35 @@ export function KankotriCover({
         {/* Divider */}
         <OrnateDivider color={config.colors.secondary} />
 
-        {/* Date */}
+        {/* Date with Enhanced Border */}
         <ScrollTrigger animation="fade" delay={0.6}>
-          <div className="text-center">
-            <div className="inline-block border-t-2 border-b-2 border-[#d4af37]/40 px-12 py-6">
-              <p className="mb-1 text-lg font-light text-[#2d5016]">{weekday}</p>
-              <p className="font-serif text-6xl font-bold text-[#c41e3a]">{day}</p>
-              <p className="mt-1 font-serif text-xl text-[#2d5016]">{monthYear}</p>
-            </div>
+          <div className="flex justify-center">
+            <GoldFoilBorder className="px-12 py-6 glow-gold">
+              <div className="text-center">
+                <p className="mb-1 text-sm uppercase tracking-[0.3em] text-[#2d5016]/70">{weekday}</p>
+                <GoldFoilText intensity="strong">
+                  <p className="font-serif text-7xl font-bold">{day}</p>
+                </GoldFoilText>
+                <p className="mt-1 font-serif text-xl text-[#2d5016]">{monthYear}</p>
+              </div>
+            </GoldFoilBorder>
           </div>
         </ScrollTrigger>
 
-        {/* Bottom decorative flowers */}
-        <div className="mt-8 flex justify-center gap-4">
-          {[...Array(3)].map((_, i) => (
-            <FlowerCorner
-              key={i}
-              position="top-left"
-              color={i === 1 ? '#d4af37' : '#2d5016'}
-              className="static opacity-40"
-            />
-          ))}
-        </div>
+        {/* Bottom decorative diyas */}
+        <ScrollTrigger animation="fade" delay={0.8}>
+          <div className="mt-12 flex justify-center gap-8">
+            {[...Array(5)].map((_, i) => (
+              <DiyaMotif
+                key={i}
+                size={50}
+                color="#d4af37"
+                className="opacity-60 animate-pulse"
+                style={{ animationDelay: `${i * 0.2}s` } as any}
+              />
+            ))}
+          </div>
+        </ScrollTrigger>
       </div>
     </div>
   );
