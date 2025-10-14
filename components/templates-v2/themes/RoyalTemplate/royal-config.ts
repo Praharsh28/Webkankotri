@@ -8,44 +8,44 @@
 import type { TemplateConfig } from '@/types/v2/template';
 
 export const royalConfig: TemplateConfig = {
-  // Color scheme - Deep purple, gold, pink
+  // Refined color palette - Elegant, emotionally resonant
   colors: {
-    primary: '#5D1A8B',      // Deep purple
-    secondary: '#D4AF37',    // Gold
-    accent: '#FF6B9D',       // Pink
-    background: '#0F0019',   // Dark purple background
+    primary: '#1a1a2e',      // Deep navy (sophistication, not harsh purple)
+    secondary: '#c9a961',    // Muted gold (luxury without garishness)
+    accent: '#efd9ce',       // Soft rose (warmth, romance)
+    background: '#0f0f1e',   // Almost black navy (elegance)
   },
 
   // Typography
   fonts: {
-    heading: 'Playfair Display',  // Elegant serif for headings
-    body: 'Inter',                 // Clean sans-serif for body
+    heading: 'Playfair Display',  // Elegant serif
+    body: 'Inter',                 // Clean sans-serif
   },
 
-  // Feature toggles - Enable/disable features
+  // Feature toggles - LESS IS MORE
   features: {
-    videoBackground: true,   // Show video background
-    audioPlayer: true,       // Show background music player
-    particles: true,         // Show floating particles
-    fireworks: true,         // Show fireworks on RSVP
-    parallax: true,          // Enable parallax scrolling
-    countdown: true,         // Show countdown timer
+    videoBackground: true,   // Yes - sets ambiance
+    audioPlayer: false,      // No - let users decide on sound
+    particles: true,         // Yes but SUBTLE (fewer, slower)
+    fireworks: true,         // Yes - only on RSVP (earned moment)
+    parallax: false,         // No - too much movement
+    countdown: true,         // Yes - creates anticipation
   },
 
-  // Animation settings
+  // Animation settings - SUBTLE & INTENTIONAL
   animations: {
-    particleCount: 100,              // Number of particles (auto-reduces on mobile)
-    particleSpeed: 'slow',           // Animation speed
-    particleEmojis: ['👑', '💎', '✨'], // Particle emojis (royal theme)
-    parallaxSpeed: 0.5,              // Parallax effect strength (0-1)
+    particleCount: 20,               // Fewer! Just enough to notice (was 100)
+    particleSpeed: 'slow',           // Slow and elegant
+    particleEmojis: ['✨'],          // Just sparkles - simpler is better
+    parallaxSpeed: 0.3,              // Gentler if enabled
   },
 
   // Content
   content: {
     heroTitle: 'A Royal Celebration',
     heroSubtitle: 'Join us as we begin our forever',
-    videoUrl: '/videos/royal-palace.mp4',  // Background video
-    musicUrl: '/music/royal-theme.mp3',    // Background music
+    videoUrl: '/videos/royal-palace.mp4',
+    musicUrl: '/music/royal-theme.mp3',
   },
 };
 

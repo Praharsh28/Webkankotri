@@ -76,7 +76,7 @@ export function RoyalRSVP({ invitationId }: RoyalRSVPProps) {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-purple-900 to-purple-700 py-20 px-4">
+    <section className="relative bg-gradient-to-br from-slate-900 to-slate-800 py-20 px-4">
       <div className="container mx-auto max-w-2xl">
         <ScrollTrigger animation="fade-up">
           <h2 className="mb-4 text-center font-serif text-4xl font-bold text-white md:text-5xl">
@@ -216,7 +216,7 @@ export function RoyalRSVP({ invitationId }: RoyalRSVPProps) {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-purple-600 py-6 text-lg hover:bg-purple-700"
+                  className="w-full border border-amber-200/30 bg-amber-200/10 py-6 text-lg text-amber-200 hover:bg-amber-200/20"
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit RSVP'}
                 </Button>

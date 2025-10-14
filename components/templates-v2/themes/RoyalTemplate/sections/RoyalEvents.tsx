@@ -11,7 +11,7 @@ interface RoyalEventsProps {
 
 export function RoyalEvents({ events, weddingDate }: RoyalEventsProps) {
   return (
-    <section className="bg-gradient-to-br from-purple-900 to-purple-700 py-20 px-4 text-white">
+    <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-20 px-4 text-white">
       <div className="container mx-auto max-w-6xl">
         <ScrollTrigger animation="fade-up">
           <h2 className="mb-4 text-center font-serif text-4xl font-bold md:text-5xl">
@@ -45,14 +45,14 @@ export function RoyalEvents({ events, weddingDate }: RoyalEventsProps) {
               animation="fade-up"
               delay={0.2 * (index + 1)}
             >
-              <div className="rounded-lg bg-white/10 p-8 backdrop-blur-sm transition-transform hover:scale-105">
-                <h3 className="mb-4 font-serif text-3xl font-bold text-gold-400">
+              <div className="rounded-lg border border-white/10 bg-white/5 p-8 backdrop-blur-sm transition-all hover:border-amber-200/30">
+                <h3 className="mb-6 font-serif text-2xl font-light text-amber-200">
                   {event.name}
                 </h3>
 
-                <div className="space-y-3 text-white/90">
+                <div className="space-y-3 text-sm text-white/70">
                   <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-gold-400" />
+                    <Calendar className="h-4 w-4 text-amber-200/60" />
                     <span>
                       {event.date.toLocaleDateString('en-US', {
                         weekday: 'long',
@@ -64,12 +64,12 @@ export function RoyalEvents({ events, weddingDate }: RoyalEventsProps) {
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <Clock className="h-5 w-5 text-gold-400" />
+                    <Clock className="h-4 w-4 text-amber-200/60" />
                     <span>{event.time}</span>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <MapPin className="h-5 w-5 text-gold-400" />
+                    <MapPin className="h-4 w-4 text-amber-200/60" />
                     <span>{event.venue}</span>
                   </div>
                 </div>
@@ -79,9 +79,9 @@ export function RoyalEvents({ events, weddingDate }: RoyalEventsProps) {
                 )}
 
                 {event.dresscode && (
-                  <div className="mt-4 rounded-lg bg-gold-500/20 p-3">
-                    <p className="text-sm">
-                      <span className="font-bold">Dress Code:</span> {event.dresscode}
+                  <div className="mt-6 border-t border-white/10 pt-4">
+                    <p className="text-xs text-white/50">
+                      <span className="font-medium">Dress Code:</span> {event.dresscode}
                     </p>
                   </div>
                 )}

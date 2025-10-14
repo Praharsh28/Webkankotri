@@ -18,11 +18,11 @@ export function RoyalFooter({
   whatsapp,
 }: RoyalFooterProps) {
   return (
-    <footer className="bg-purple-950 py-12 px-4 text-white">
+    <footer className="border-t border-white/10 bg-black py-12 px-4 text-white">
       <div className="container mx-auto max-w-4xl text-center">
-        <div className="mb-6">
-          <Heart className="mx-auto mb-4 h-12 w-12 text-gold-400" />
-          <p className="font-serif text-2xl">
+        <div className="mb-8">
+          <Heart className="mx-auto mb-4 h-8 w-8 text-amber-200/40" />
+          <p className="font-serif text-xl font-light text-white/70">
             {groomName} & {brideName}
           </p>
         </div>
