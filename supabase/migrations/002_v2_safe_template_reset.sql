@@ -1,98 +1,28 @@
 -- ============================================================================
--- WebKankotri V2 - Fresh Start Migration
+-- WebKankotri V2 - SAFE Template Reset (Preserves User Data)
 -- ============================================================================
--- This migration prepares the database for the new V2 template system
--- Run this to clean up old template data and start fresh
+-- This migration ONLY resets templates, keeping user invitations/data intact
+-- Use this if you have existing users/invitations you want to keep
 -- ============================================================================
 
--- ⚠️ WARNING: This will delete ALL existing data!
--- Only run this if you want a fresh start
-
--- Delete in correct order to respect foreign key constraints
--- 1. Delete payments (references invitations)
-DELETE FROM public.payments;
-
--- 2. Delete RSVPs (references invitations)
-DELETE FROM public.rsvps;
-
--- 3. Delete guests (references invitations)
-DELETE FROM public.guests;
-
--- 4. Delete invitations (references templates)
-DELETE FROM public.invitations;
-
--- 5. Finally delete templates
-DELETE FROM public.templates;
-
--- Reset sequences and counters
--- This ensures we start with clean data
+-- ⚠️ IMPORTANT: This will NOT delete user data (invitations, RSVPs, etc.)
+-- It only removes old templates and adds new V2 templates
 
 -- ============================================================================
--- TEMPLATE CATEGORIES FOR V2
+-- Step 1: Mark all templates as inactive (don't delete yet)
 -- ============================================================================
--- We'll use these consistent categories across all templates
+-- This prevents users from creating new invitations with old templates
+-- but existing invitations will still work
 
--- Categories:
--- - 'royal' - Luxury palace-inspired templates
--- - 'traditional' - Classic Gujarati wedding templates  
--- - 'modern' - Contemporary minimalist templates
--- - 'festive' - Celebration and festival templates
-
--- Price Tiers:
--- - 'free' - ₹0 (1-2 free templates for users to try)
--- - 'basic' - ₹99 (Good quality templates)
--- - 'premium' - ₹149 (Stunning templates with all features)
+UPDATE public.templates
+SET is_active = false
+WHERE template_id NOT LIKE '%-v2'; -- Keep any V2 templates if they exist
 
 -- ============================================================================
--- V2 TEMPLATE STRUCTURE
+-- Step 2: Add V2 Templates
 -- ============================================================================
--- Each template in V2 will have:
---
--- config JSONB structure:
--- {
---   "version": "2.0",
---   "features": {
---     "videoBackground": true/false,
---     "audioPlayer": true/false,
---     "photoCarousel": true/false,
---     "countdown": true/false,
---     "fireworks": true/false,
---     "parallax": true/false,
---     "particles": true/false
---   },
---   "colors": {
---     "primary": "#hex",
---     "secondary": "#hex",
---     "accent": "#hex",
---     "background": "#hex"
---   },
---   "animations": {
---     "particles": {
---       "type": "custom",
---       "emojis": ["👑", "💎"],
---       "count": 100,
---       "speed": "slow"
---     },
---     "parallax": {
---       "enabled": true,
---       "speed": 0.5
---     },
---     "entrance": {
---       "type": "curtain-reveal",
---       "duration": 1.5
---     }
---   },
---   "fonts": {
---     "heading": "Playfair Display",
---     "body": "Inter"
---   }
--- }
 
--- ============================================================================
--- EXAMPLE: Insert placeholder for Royal Template (Coming Soon)
--- ============================================================================
--- This is just a placeholder - actual template will be inserted when built
-
+-- Check if Royal V2 already exists, if not insert it
 INSERT INTO public.templates (
   template_id,
   name,
@@ -105,7 +35,8 @@ INSERT INTO public.templates (
   config,
   is_active,
   sort_order
-) VALUES (
+)
+SELECT
   'royal-v2',
   'Royal Palace (V2)',
   'Luxurious palace-inspired template with video backgrounds, 3D effects, and stunning animations. Coming Soon!',
@@ -155,10 +86,12 @@ INSERT INTO public.templates (
   }'::jsonb,
   false,  -- Not active yet (coming soon)
   1
+WHERE NOT EXISTS (
+  SELECT 1 FROM public.templates WHERE template_id = 'royal-v2'
 );
 
 -- ============================================================================
--- UTILITY FUNCTIONS FOR V2
+-- Step 3: Create utility functions (if not exist)
 -- ============================================================================
 
 -- Function to get active templates by category
@@ -229,22 +162,36 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 GRANT EXECUTE ON FUNCTION get_template_details(UUID) TO anon, authenticated;
 
 -- ============================================================================
+-- OPTIONAL: Clean up old templates (only after migrating invitations)
+-- ============================================================================
+-- Uncomment this ONLY after you've:
+-- 1. Migrated all existing invitations to use V2 templates
+-- 2. Or after you're sure old templates are no longer needed
+
+/*
+DELETE FROM public.templates
+WHERE is_active = false
+  AND template_id NOT LIKE '%-v2';
+*/
+
+-- ============================================================================
 -- MIGRATION NOTES
 -- ============================================================================
 -- 
 -- This migration:
--- ✅ Cleans up old template data
--- ✅ Adds placeholder for Royal V2 template (inactive)
+-- ✅ Marks old templates as inactive (safe)
+-- ✅ Adds Royal V2 template placeholder (inactive)
 -- ✅ Creates utility functions for template queries
--- ✅ Ready for new V2 templates to be added
+-- ✅ Preserves all user data (invitations, RSVPs, etc.)
 --
--- Next steps:
--- 1. Build Royal template in code
--- 2. Add thumbnail and preview video
--- 3. Run migration to activate: UPDATE templates SET is_active = true WHERE template_id = 'royal-v2'
--- 4. Repeat for other templates (Traditional V2, Modern V2, etc.)
+-- Old templates remain in database but are hidden from users
+-- Existing invitations will continue to work
+--
+-- To fully clean up old templates later:
+-- 1. Migrate existing invitations to V2 templates (if needed)
+-- 2. Run the commented DELETE statement above
 --
 -- ============================================================================
 
 -- Mark migration complete
-SELECT 'V2 Fresh Start Migration Complete! Database is ready for new templates.' as status;
+SELECT 'V2 Safe Template Reset Complete! Old templates inactive, user data preserved.' as status;

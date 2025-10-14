@@ -13,15 +13,53 @@
    - Payments table
    - All RLS policies
 
-2. **`002_v2_fresh_start.sql`** - V2 fresh start
-   - Cleans old template data
+2. **Choose ONE of these V2 migrations:**
+
+   **Option A: `002_v2_fresh_start.sql`** - Complete fresh start ⚠️
+   - ⚠️ **DELETES ALL DATA** (templates, invitations, RSVPs, everything!)
+   - Use this for: New database or complete reset
    - Adds Royal V2 placeholder (inactive)
    - Utility functions for queries
-   - Ready for new V2 templates
+
+   **Option B: `002_v2_safe_template_reset.sql`** - Safe reset ✅ (Recommended)
+   - ✅ **PRESERVES USER DATA** (invitations, RSVPs, guests, payments)
+   - ❌ Only marks old templates as inactive
+   - Use this for: Existing database with user data
+   - Adds Royal V2 placeholder (inactive)
+   - Utility functions for queries
 
 3. **`003_view_counter_function.sql`** - View counter utility
    - Function to increment invitation views
    - Used for analytics
+
+---
+
+## ⚡ Which Migration Should I Run?
+
+### Scenario 1: Brand New Database (No Data)
+```bash
+# Run in order:
+1. 001_initial_schema.sql
+2. 002_v2_fresh_start.sql         # Safe to use, no data to lose
+3. 003_view_counter_function.sql
+```
+
+### Scenario 2: Existing Database with User Data (Your Case!)
+```bash
+# Run in order:
+1. 001_initial_schema.sql          # Already done
+2. 002_v2_safe_template_reset.sql  # ✅ Use this one! Keeps user data
+3. 003_view_counter_function.sql   # Already done
+```
+
+### Scenario 3: Want to Completely Reset Everything
+```bash
+# ⚠️ WARNING: This deletes EVERYTHING!
+# Run in order:
+1. 001_initial_schema.sql
+2. 002_v2_fresh_start.sql          # Deletes all data
+3. 003_view_counter_function.sql
+```
 
 ---
 
