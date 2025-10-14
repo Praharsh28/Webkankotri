@@ -16,14 +16,17 @@ import { PremiumGoldFoil, EmbossedText, GoldFoilFrame } from '../effects/Premium
 import { PaisleyMotif } from '../symbols/PremiumMotifs';
 import { authenticKankotriColors } from '../kankotri-colors-v2';
 
-// Advanced Animations
-import { FloatingPetals } from '../animations/FloatingPetals';
-import { GoldDustCursor } from '../animations/GoldDustCursor';
+// Advanced Animations - UPGRADED!
+import { PhysicsPetals } from '../animations/PhysicsPetals'; // NEW: Physics-based!
+import { AdvancedParticles } from '../animations/AdvancedParticles'; // NEW: With connections!
 import { ConfettiBurst } from '../animations/ConfettiBurst';
 import { TextReveal } from '../animations/TextReveal';
 import { DiyaFlame } from '../animations/DiyaFlame';
 import { LotusBloom } from '../animations/LotusBloom';
 import { ParallaxScroll, ScaleOnScroll } from '../animations/ParallaxScroll';
+import { AmbientSound } from '../audio/AmbientSound'; // NEW: Sound system!
+import { ProfessionalGanesh } from '../symbols/ProfessionalGanesh'; // NEW: Professional SVG!
+import { EnhancedPeacock } from '../symbols/EnhancedPeacock'; // NEW: Intricate peacock!
 import { motion } from 'framer-motion';
 
 interface KankotriCoverProps {
@@ -59,16 +62,19 @@ export function KankotriCover({
 
   return (
     <div className="relative min-h-screen paper-texture py-16 px-6 overflow-hidden">
-      {/* 🎬 ULTRA-ADVANCED ANIMATIONS */}
+      {/* 🎬 UPGRADED ULTRA-ADVANCED ANIMATIONS */}
       
-      {/* Floating flower petals in background */}
-      <FloatingPetals count={40} />
+      {/* NEW: Physics-based petals (realistic falling with wind!) */}
+      <PhysicsPetals count={50} windStrength={0.5} />
       
-      {/* Gold dust cursor trail */}
-      <GoldDustCursor />
+      {/* NEW: Advanced particles with connections! */}
+      <AdvancedParticles count={80} interactive connections />
       
       {/* Confetti burst on load */}
       <ConfettiBurst delay={1000} duration={3000} />
+      
+      {/* NEW: Ambient Sound System */}
+      <AmbientSound />
       
       {/* Corner decorations with parallax */}
       <ParallaxScroll speed={0.3} direction="down">
@@ -84,22 +90,19 @@ export function KankotriCover({
         <CornerDecoration position="bottom-right" />
       </ParallaxScroll>
       
-      {/* Animated paisley accents with parallax */}
-      <ParallaxScroll speed={0.5} className="absolute top-20 left-20 opacity-20">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
-        >
-          <PaisleyMotif size={80} color={authenticKankotriColors.templeGreen} />
-        </motion.div>
+      {/* NEW: Professional Ganesh at top center */}
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 z-10">
+        <ProfessionalGanesh size={120} animate />
+      </div>
+      
+      {/* NEW: Enhanced Peacock on left */}
+      <ParallaxScroll speed={0.3} className="absolute top-32 left-8 opacity-40">
+        <EnhancedPeacock size={100} animate />
       </ParallaxScroll>
-      <ParallaxScroll speed={0.5} className="absolute top-20 right-20 opacity-20">
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
-        >
-          <PaisleyMotif size={80} color={authenticKankotriColors.templeGreen} className="-scale-x-100" />
-        </motion.div>
+      
+      {/* NEW: Enhanced Peacock on right (mirrored) */}
+      <ParallaxScroll speed={0.3} className="absolute top-32 right-8 opacity-40 -scale-x-100">
+        <EnhancedPeacock size={100} animate />
       </ParallaxScroll>
 
       <div className="container mx-auto max-w-2xl">
