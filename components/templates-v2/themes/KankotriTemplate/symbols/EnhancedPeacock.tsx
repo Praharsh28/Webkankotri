@@ -102,12 +102,14 @@ export function EnhancedPeacock({
                 />
               </motion.g>
 
-              {/* Feather barbs (fine details) */}
+              {/* Feather barbs (fine details) - Fixed for SSR */}
               {[...Array(5)].map((_, j) => {
                 const progress = j / 5;
                 const barbX = 100 + Math.sin(rad) * 75 * progress;
                 const barbY = 120 - Math.abs(Math.cos(rad)) * 50 * progress;
-                const barbAngle = angle + (Math.random() - 0.5) * 30;
+                // Use deterministic variation based on i and j instead of random
+                const variation = ((i * 7 + j * 3) % 100) / 100 - 0.5;
+                const barbAngle = angle + variation * 30;
                 const barbRad = (barbAngle * Math.PI) / 180;
                 const barbEndX = barbX + Math.sin(barbRad) * 8;
                 const barbEndY = barbY - Math.abs(Math.cos(barbRad)) * 8;
