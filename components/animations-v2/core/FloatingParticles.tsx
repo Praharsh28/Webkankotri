@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useMemo } from 'react';
+import { useEffect, useRef, useMemo, useState } from 'react';
 import type { ParticleType, ParticleSpeed } from '@/types/v2/animation';
 
 /**
@@ -121,7 +121,13 @@ export function FloatingParticles({
   className = '',
 }: FloatingParticlesProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isClient, setIsClient] = useState(false);
   const isMobile = useMemo(() => isMobileDevice(), []);
+  
+  // Only render on client to avoid hydration mismatch
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   
   // Reduce particle count on mobile
   const adjustedCount = isMobile ? Math.min(count, Math.floor(count / 4)) : count;
@@ -141,8 +147,8 @@ export function FloatingParticles({
     [adjustedCount, particleEmojis, size, opacity, speed]
   );
 
-  // Don't render if disabled or no emojis available
-  if (disabled || particleEmojis.length === 0) {
+  // Don't render if disabled, no emojis available, or not client-side yet
+  if (disabled || particleEmojis.length === 0 || !isClient) {
     return null;
   }
 
