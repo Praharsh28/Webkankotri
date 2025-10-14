@@ -57,7 +57,7 @@ export function PhotoGallerySection({ data, theme, animated = true }: PhotoGalle
       {/* Gallery */}
       <div className={`max-w-5xl mx-auto ${getLayoutClass()}`}>
         {photos.map((photo, index) => (
-          <HoverScale key={photo.id} scale={1.05}>
+          <HoverScale key={photo.id || photo.url || index} scale={1.05}>
             <div
               className={`${data.layout === 'carousel' ? 'flex-none w-72 snap-center' : ''} ${data.layout === 'masonry' ? 'break-inside-avoid mb-4' : ''}`}
               onClick={() => setSelectedPhoto(photo.url)}

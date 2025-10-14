@@ -40,9 +40,9 @@ export function TemplateGrid({ templates }: TemplateGridProps) {
 
   return (
     <div>
-      {/* Category Filters */}
-      <div className="mb-8">
-        <div className="flex flex-wrap gap-3 justify-center">
+      {/* Category Filters - Mobile Optimized with 44px min tap targets */}
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
           {categories.map((category) => {
             const isSelected = selectedCategory === category
             const count = categoryCounts[category as keyof typeof categoryCounts] || 0
@@ -51,14 +51,14 @@ export function TemplateGrid({ templates }: TemplateGridProps) {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-full font-medium text-sm transition-all shadow-sm ${
+                className={`min-h-[44px] px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-medium text-xs sm:text-sm transition-all shadow-sm active:scale-95 ${
                   isSelected
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-105'
-                    : 'bg-white text-gray-700 hover:shadow-md hover:scale-105'
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg sm:scale-105'
+                    : 'bg-white text-gray-700 hover:shadow-md sm:hover:scale-105'
                 }`}
               >
                 {category.charAt(0).toUpperCase() + category.slice(1)}
-                <span className={`ml-2 text-xs ${
+                <span className={`ml-1.5 sm:ml-2 text-[10px] sm:text-xs ${
                   isSelected ? 'text-purple-100' : 'text-gray-500'
                 }`}>
                   ({count})

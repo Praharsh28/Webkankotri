@@ -2,6 +2,7 @@
 
 // Core Sections
 export { HeaderSection } from './HeaderSection'
+export { ModernLightHeaderSection } from './ModernLightHeaderSection'
 export { BlessingSection } from './BlessingSection'
 export { ParentsSection } from './ParentsSection'
 export { EventSection } from './EventSection'

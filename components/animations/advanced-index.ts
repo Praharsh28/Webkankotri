@@ -1,30 +1,39 @@
 // Advanced Animation Components Library
 // Export all new physics-based, 3D, text, lighting, and interactive animations
 
+// 3D Effects
+export { Parallax3D } from './3d/Parallax3D'
+export { Flip3D } from './3d/Flip3D'
+
 // Physics-Based Animations
-export { GravityDrop } from './physics/GravityDrop'
 export { Bounce } from './physics/Bounce'
+export { GravityDrop } from './physics/GravityDrop'
 export { WaveMotion } from './physics/WaveMotion'
 
-// Particle Animations
-export { ParticleExplosion } from './particles/ParticleExplosion'
-
-// 3D Animations
-export { Flip3D } from './3d/Flip3D'
-export { Parallax3D } from './3d/Parallax3D'
-
-// Text Animations
-export { LetterDrop } from './text/LetterDrop'
+// Text Effects
 export { LetterWave } from './text/LetterWave'
+export { LetterDrop } from './text/LetterDrop'
 export { TextGradient } from './text/TextGradient'
 
-// Lighting Effects
+// Particles
+export { ParticleExplosion } from './particles/ParticleExplosion'
+
+// Lighting
 export { Glow } from './lighting/Glow'
 
-// Interactive Animations
+// Interactive
 export { MouseFollow } from './interactive/MouseFollow'
 
-// Scroll-Based Animations
+// Scroll
 export { ScrollParallax } from './scroll/ScrollParallax'
+
+// Morph
+export { ShapeMorph } from './morph/ShapeMorph'
+
+// Path
+export { PathFollow } from './path/PathFollow'
+
+// Special Containers
+export { ModernLightContainer } from './ModernLightContainer'
 
 // Total: 13 new animation types with 2-3 variants each = ~35 components!

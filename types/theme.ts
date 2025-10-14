@@ -1,6 +1,12 @@
 // Theme System Type Definitions
 
-export type ThemeId = 'traditional' | 'royal' | 'modern' | 'traditional-light' | 'royal-light' | 'modern-light'
+export type ThemeId = 
+  | 'traditional' 
+  | 'royal' 
+  | 'modern' 
+  | 'traditional-light' 
+  | 'royal-light' 
+  | 'modern-light'
 
 export interface ColorTheme {
   // Primary colors

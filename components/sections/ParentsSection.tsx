@@ -1,6 +1,6 @@
 'use client'
 
-import { FadeIn } from '@/components/animations'
+import { FadeIn, RevealOnScroll, ShineEffect } from '@/components/animations'
 import type { ParentsSectionData } from '@/types/section'
 import type { KankotriTheme } from '@/types/theme'
 import { useThemeStyles } from '@/lib/hooks/useThemeStyles'
@@ -16,6 +16,7 @@ export function ParentsSection({ data, theme, animated = true }: ParentsSectionP
   if (!data.showParentNames) return null
 
   const sectionStyle = theme.sectionStyles?.parents || {}
+  const animations = theme.animations
 
   const content = (
     <div 
@@ -27,28 +28,58 @@ export function ParentsSection({ data, theme, animated = true }: ParentsSectionP
         borderStyle: 'solid',
       }}
     >
-      <p className="text-lg mb-4" style={text.secondary}>
-        With blessings from
-      </p>
+      <FadeIn delay={0.2} direction="down">
+        <p className="text-lg mb-4" style={text.secondary}>
+          With blessings from
+        </p>
+      </FadeIn>
       
       <div className="space-y-4">
-        <div>
-          <p className="text-xl font-medium" style={{ ...font.bodyEn, ...text.heading }}>
-            {data.groomParents}
-          </p>
-          <p className="text-sm" style={text.secondary}>(Groom's Parents)</p>
-        </div>
+        <FadeIn delay={0.4} direction="up">
+          {animations.enabled.shineEffect ? (
+            <ShineEffect duration={2.5}>
+              <div>
+                <p className="text-xl font-medium" style={{ ...font.bodyEn, ...text.heading }}>
+                  {data.groomParents}
+                </p>
+                <p className="text-sm" style={text.secondary}>(Groom's Parents)</p>
+              </div>
+            </ShineEffect>
+          ) : (
+            <div>
+              <p className="text-xl font-medium" style={{ ...font.bodyEn, ...text.heading }}>
+                {data.groomParents}
+              </p>
+              <p className="text-sm" style={text.secondary}>(Groom's Parents)</p>
+            </div>
+          )}
+        </FadeIn>
 
-        <div style={{ color: theme.colors.accent }}>
-          &
-        </div>
+        <FadeIn delay={0.6} direction="up">
+          <div style={{ color: theme.colors.accent, fontSize: '1.5rem' }}>
+            &
+          </div>
+        </FadeIn>
 
-        <div>
-          <p className="text-xl font-medium" style={{ ...font.bodyEn, ...text.heading }}>
-            {data.brideParents}
-          </p>
-          <p className="text-sm" style={text.secondary}>(Bride's Parents)</p>
-        </div>
+        <FadeIn delay={0.8} direction="up">
+          {animations.enabled.shineEffect ? (
+            <ShineEffect duration={2.5}>
+              <div>
+                <p className="text-xl font-medium" style={{ ...font.bodyEn, ...text.heading }}>
+                  {data.brideParents}
+                </p>
+                <p className="text-sm" style={text.secondary}>(Bride's Parents)</p>
+              </div>
+            </ShineEffect>
+          ) : (
+            <div>
+              <p className="text-xl font-medium" style={{ ...font.bodyEn, ...text.heading }}>
+                {data.brideParents}
+              </p>
+              <p className="text-sm" style={text.secondary}>(Bride's Parents)</p>
+            </div>
+          )}
+        </FadeIn>
       </div>
     </div>
   )
@@ -56,8 +87,8 @@ export function ParentsSection({ data, theme, animated = true }: ParentsSectionP
   if (!animated) return content
 
   return (
-    <FadeIn delay={0.5} direction="up">
+    <RevealOnScroll direction="up" delay={0}>
       {content}
-    </FadeIn>
+    </RevealOnScroll>
   )
 }

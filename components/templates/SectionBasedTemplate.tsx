@@ -4,6 +4,7 @@ import { useMemo, useState, useEffect } from 'react'
 import type { SectionBasedInvitation } from '@/types/section'
 import {
   HeaderSection,
+  ModernLightHeaderSection,
   EventSection,
   ParentsSection,
   MessageSection,
@@ -23,6 +24,8 @@ import {
   FloatingElements,
   DecorativeCorner,
 } from '@/components/animations'
+import { ModernLightContainer } from '@/components/animations/ModernLightContainer'
+import { getTheme } from '@/lib/themes'
 
 interface SectionBasedTemplateProps {
   invitation: SectionBasedInvitation
@@ -66,6 +69,10 @@ export function SectionBasedTemplate({ invitation, preview = false }: SectionBas
       .sort((a, b) => a.config.order - b.config.order)
   }, [invitation.sections])
 
+  // Check if this is modern-light template
+  const isModernLight = invitation.template_id === 'modern-light'
+  const kankotriTheme = isModernLight ? getTheme('modern-light') : null
+
   // SSR safety
   if (!mounted) {
     return (
@@ -81,6 +88,88 @@ export function SectionBasedTemplate({ invitation, preview = false }: SectionBas
     )
   }
 
+  // MODERN LIGHT: Use special stunning container
+  if (isModernLight && kankotriTheme) {
+    return (
+      <ModernLightContainer theme={kankotriTheme}>
+        <div className="p-6 md:p-10 space-y-8">
+          {enabledSections.map((section) => {
+            const sectionTheme = invitation.theme as any
+            switch (section.config.type) {
+              case 'header':
+                return (
+                  <ModernLightHeaderSection
+                    key={section.id}
+                    data={section.data as any}
+                    theme={kankotriTheme}
+                    animated={!preview}
+                  />
+                )
+              
+              case 'blessing':
+                return (
+                  <BlessingSection
+                    key={section.id}
+                    data={section.data as any}
+                    theme={kankotriTheme}
+                    animated={!preview}
+                  />
+                )
+              
+              case 'parents':
+                return (
+                  <ParentsSection
+                    key={section.id}
+                    data={section.data as any}
+                    theme={kankotriTheme}
+                    animated={!preview}
+                  />
+                )
+              
+              case 'event-main':
+              case 'event-mehendi':
+              case 'event-sangeet':
+              case 'event-haldi':
+              case 'event-reception':
+                return (
+                  <EventSection
+                    key={section.id}
+                    data={section.data as any}
+                    theme={kankotriTheme}
+                    animated={!preview}
+                  />
+                )
+              
+              case 'message':
+                return (
+                  <MessageSection
+                    key={section.id}
+                    data={section.data as any}
+                    theme={kankotriTheme}
+                    animated={!preview}
+                  />
+                )
+              
+              case 'custom-text':
+                return (
+                  <CustomTextSection
+                    key={section.id}
+                    data={section.data as any}
+                    theme={kankotriTheme}
+                    animated={!preview}
+                  />
+                )
+              
+              default:
+                return null
+            }
+          })}
+        </div>
+      </ModernLightContainer>
+    )
+  }
+
+  // DEFAULT: Regular template
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
       {/* Dynamic gradient background */}

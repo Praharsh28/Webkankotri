@@ -1,6 +1,6 @@
 'use client'
 
-import { FadeIn } from '@/components/animations'
+import { FadeIn, RevealOnScroll, ShineEffect, Pulse } from '@/components/animations'
 import type { KankotriTheme } from '@/types/theme'
 import { useThemeStyles } from '@/lib/hooks/useThemeStyles'
 
@@ -34,6 +34,8 @@ export function BlessingSection({ data, theme, animated = true }: BlessingSectio
   const fontStyle = data.language === 'gu' ? font.headingGu : font.headingEn
   const sectionStyle = theme.sectionStyles?.blessing || {}
 
+  const animations = theme.animations
+
   const content = (
     <div 
       className="py-6 px-4 text-center"
@@ -45,33 +47,59 @@ export function BlessingSection({ data, theme, animated = true }: BlessingSectio
       }}
     >
       {data.showIcon !== false && (
-        <div className="text-4xl mb-3">{getIcon()}</div>
+        <FadeIn delay={0.2} direction="down">
+          {animations.enabled.pulse ? (
+            <Pulse scale={1.1} duration={2}>
+              <div className="text-4xl mb-3">{getIcon()}</div>
+            </Pulse>
+          ) : (
+            <div className="text-4xl mb-3">{getIcon()}</div>
+          )}
+        </FadeIn>
       )}
       
-      <div 
-        className="text-xl md:text-2xl font-semibold"
-        style={{
-          ...fontStyle,
-          color: sectionStyle.textColor || text.secondary.color,
-        }}
-      >
-        {data.text}
-      </div>
+      <FadeIn delay={0.4} direction="up">
+        {animations.enabled.shineEffect ? (
+          <ShineEffect duration={3}>
+            <div 
+              className="text-xl md:text-2xl font-semibold"
+              style={{
+                ...fontStyle,
+                color: sectionStyle.textColor || text.secondary.color,
+              }}
+            >
+              {data.text}
+            </div>
+          </ShineEffect>
+        ) : (
+          <div 
+            className="text-xl md:text-2xl font-semibold"
+            style={{
+              ...fontStyle,
+              color: sectionStyle.textColor || text.secondary.color,
+            }}
+          >
+            {data.text}
+          </div>
+        )}
+      </FadeIn>
 
       {/* Decorative divider */}
-      <div className="flex items-center justify-center mt-4">
-        <div className="w-12 h-0.5" style={gradient.divider(theme.colors.accent)} />
-        <span className="mx-3" style={{ color: theme.colors.accent }}>❀</span>
-        <div className="w-12 h-0.5" style={gradient.divider(theme.colors.accent)} />
-      </div>
+      <FadeIn delay={0.6} direction="up">
+        <div className="flex items-center justify-center mt-4">
+          <div className="w-12 h-0.5" style={gradient.divider(theme.colors.accent)} />
+          <span className="mx-3" style={{ color: theme.colors.accent }}>❀</span>
+          <div className="w-12 h-0.5" style={gradient.divider(theme.colors.accent)} />
+        </div>
+      </FadeIn>
     </div>
   )
 
   if (!animated) return content
 
   return (
-    <FadeIn delay={0.3} direction="up">
+    <RevealOnScroll direction="up" delay={0}>
       {content}
-    </FadeIn>
+    </RevealOnScroll>
   )
 }

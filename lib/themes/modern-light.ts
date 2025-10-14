@@ -85,11 +85,11 @@ export const modernLightTheme: KankotriTheme = {
   
   animations: {
     enabled: {
-      floatingElements: false, sparkle: false, pulse: true, fadeIn: true,
-      slideIn: true, shineEffect: false, decorativeCorner: false, confettiBurst: false,
+      floatingElements: true, sparkle: true, pulse: true, fadeIn: true,
+      slideIn: true, shineEffect: true, decorativeCorner: true, confettiBurst: false,
     },
     speed: 'fast',
-    floatingEmojis: [],
+    floatingEmojis: ['✨', '💫', '⭐', '🌟'],
   },
   
   sectionStyles: {

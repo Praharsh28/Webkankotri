@@ -1,6 +1,6 @@
 'use client'
 
-import { FadeIn } from '@/components/animations'
+import { FadeIn, RevealOnScroll, Typewriter, ShineEffect } from '@/components/animations'
 import type { MessageSectionData } from '@/types/section'
 import type { KankotriTheme } from '@/types/theme'
 import { useThemeStyles } from '@/lib/hooks/useThemeStyles'
@@ -14,24 +14,46 @@ interface MessageSectionProps {
 export function MessageSection({ data, theme, animated = true }: MessageSectionProps) {
   const { text, font } = useThemeStyles(theme)
   const sectionStyle = theme.sectionStyles?.message || {}
+  const animations = theme.animations
 
   const content = (
     <div className="text-center py-8 px-6 max-w-2xl mx-auto">
       <div className="relative">
-        <span className="text-4xl absolute -top-4 -left-2" style={{ color: theme.colors.accent }}>"</span>
-        <p 
-          className="text-lg md:text-xl italic px-6"
-          style={{ ...font.bodyEn, ...text.primary }}
-        >
-          {data.message}
-        </p>
-        <span className="text-4xl absolute -bottom-8 -right-2" style={{ color: theme.colors.accent }}>"</span>
+        <FadeIn delay={0.2} direction="left">
+          <span className="text-4xl absolute -top-4 -left-2" style={{ color: theme.colors.accent }}>"</span>
+        </FadeIn>
+        
+        <FadeIn delay={0.4} direction="up">
+          {animations.enabled.shineEffect ? (
+            <ShineEffect duration={4}>
+              <p 
+                className="text-lg md:text-xl italic px-6"
+                style={{ ...font.bodyEn, ...text.primary }}
+              >
+                {data.message}
+              </p>
+            </ShineEffect>
+          ) : (
+            <p 
+              className="text-lg md:text-xl italic px-6"
+              style={{ ...font.bodyEn, ...text.primary }}
+            >
+              {data.message}
+            </p>
+          )}
+        </FadeIn>
+        
+        <FadeIn delay={0.6} direction="right">
+          <span className="text-4xl absolute -bottom-8 -right-2" style={{ color: theme.colors.accent }}>"</span>
+        </FadeIn>
       </div>
       
       {data.author && (
-        <p className="mt-8" style={text.secondary}>
-          - {data.author}
-        </p>
+        <FadeIn delay={0.8} direction="up">
+          <p className="mt-8" style={text.secondary}>
+            - {data.author}
+          </p>
+        </FadeIn>
       )}
     </div>
   )
@@ -39,8 +61,8 @@ export function MessageSection({ data, theme, animated = true }: MessageSectionP
   if (!animated) return content
 
   return (
-    <FadeIn delay={0.7} direction="up">
+    <RevealOnScroll direction="up" delay={0}>
       {content}
-    </FadeIn>
+    </RevealOnScroll>
   )
 }
