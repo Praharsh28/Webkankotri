@@ -27,7 +27,7 @@ export async function POST(request: Request) {
         guest_count: body.guestCount || 1,
         meal_preference: body.mealPreference || null,
         message: body.message || null,
-      })
+      } as any)
       .select()
       .single();
 

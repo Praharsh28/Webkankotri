@@ -20,7 +20,7 @@ export default async function PublicInvitationPage({ params }: { params: Promise
   }
 
   // Increment view count
-  await supabase.rpc('increment_view_count', { invitation_id: (invitation as any).id })
+  await (supabase.rpc as any)('increment_view_count', { invitation_id: (invitation as any).id })
 
   // Transform database data to InvitationData format
   const invitationData: InvitationData = (invitation as any).data as InvitationData
