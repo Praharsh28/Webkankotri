@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
-import { InvitationViewer } from '@/components/invite/InvitationViewer'
-import { incrementViewCount } from '@/lib/actions/invitation'
+import { RoyalTemplate } from '@/components/templates-v2/themes/RoyalTemplate'
+import type { InvitationData } from '@/types/v2/template'
 
 export default async function PublicInvitationPage({ params }: { params: Promise<{ slug: string }> }) {
   const supabase = await createClient()
@@ -10,24 +10,22 @@ export default async function PublicInvitationPage({ params }: { params: Promise
   // Fetch invitation by slug
   const { data: invitation, error } = await supabase
     .from('invitations')
-    .select('*, templates(*), user_profiles(full_name)')
+    .select('*')
     .eq('slug', slug)
-    .eq('status', 'published') // Only show published invitations
+    .eq('status', 'published')
     .single()
 
   if (error || !invitation) {
     notFound()
   }
 
-  // Increment view count (don't await, let it run async)
-  incrementViewCount((invitation as any).id)
+  // Increment view count
+  await supabase.rpc('increment_view_count', { invitation_id: (invitation as any).id })
 
-  return (
-    <InvitationViewer 
-      invitation={invitation as any}
-      template={(invitation as any).templates}
-    />
-  )
+  // Transform database data to InvitationData format
+  const invitationData: InvitationData = (invitation as any).data as InvitationData
+
+  return <RoyalTemplate data={invitationData} />
 }
 
 // Generate metadata for SEO
