@@ -57,7 +57,7 @@ export function KankotriTemplate({ data }: KankotriTemplateProps) {
             groomName={data.groom.name}
             brideName={data.bride.name}
             hosts={data.hosts}
-            venue={data.venue}
+            venue={data.wedding.venue}
             weddingDate={data.wedding.date}
             config={config}
           />
@@ -80,7 +80,7 @@ export function KankotriTemplate({ data }: KankotriTemplateProps) {
         {/* Page 4: Venue */}
         {data.pages.venue && (
           <KankotriVenue
-            venue={data.venue}
+            venue={data.wedding.venue}
             config={config}
           />
         )}
