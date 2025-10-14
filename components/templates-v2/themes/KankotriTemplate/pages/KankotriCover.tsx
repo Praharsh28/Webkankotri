@@ -12,9 +12,10 @@
 
 import { ScrollTrigger } from '@/components/animations-v2';
 import { OrnateDivider } from '../decorations/TraditionalBorder';
-import { EnhancedBorder, CornerDecoration } from '../decorations/EnhancedBorders';
-import { GoldFoilText, GoldFoilBorder } from '../effects/GoldFoilText';
-import { LotusMotif, DiyaMotif } from '../symbols/PremiumMotifs';
+import { CornerDecoration } from '../decorations/EnhancedBorders';
+import { PremiumGoldFoil, EmbossedText, GoldFoilFrame } from '../effects/PremiumGoldFoil';
+import { LotusMotif, DiyaMotif, PaisleyMotif } from '../symbols/PremiumMotifs';
+import { authenticKankotriColors } from '../kankotri-colors-v2';
 
 interface KankotriCoverProps {
   groomName: string;
@@ -48,15 +49,20 @@ export function KankotriCover({
   });
 
   return (
-    <div className="relative min-h-screen bg-[#f5f5dc] paper-texture py-12 px-6">
-      {/* Enhanced decorative borders with premium motifs */}
-      <EnhancedBorder type="mixed" position="corners" />
-      
-      {/* Decorative corner flourishes */}
+    <div className="relative min-h-screen paper-texture py-16 px-6">
+      {/* Refined corner decorations - Less clutter */}
       <CornerDecoration position="top-left" />
       <CornerDecoration position="top-right" />
       <CornerDecoration position="bottom-left" />
       <CornerDecoration position="bottom-right" />
+      
+      {/* Subtle paisley accents */}
+      <div className="absolute top-20 left-20 opacity-20">
+        <PaisleyMotif size={80} color={authenticKankotriColors.templeGreen} />
+      </div>
+      <div className="absolute top-20 right-20 opacity-20 -scale-x-100">
+        <PaisleyMotif size={80} color={authenticKankotriColors.templeGreen} />
+      </div>
 
       <div className="container mx-auto max-w-2xl">
         {/* Couple Photo with decorative frame */}
@@ -95,61 +101,76 @@ export function KankotriCover({
           </ScrollTrigger>
         )}
 
-        {/* Names with Gold Foil Effect */}
+        {/* Names with Premium Gold Foil - REFINED */}
         <ScrollTrigger animation="fade" delay={0.4}>
-          <div className="mb-8 text-center">
-            <div className="mb-6">
-              <GoldFoilText intensity="strong">
-                <p className="mb-2 font-serif text-5xl font-light tracking-[0.1em] md:text-7xl">
-                  {groomName}
-                </p>
-              </GoldFoilText>
-              
-              <div className="my-6 flex items-center justify-center gap-4">
-                <LotusMotif size={40} color="#c41e3a" className="opacity-60" />
-                <GoldFoilText intensity="medium">
-                  <span className="font-serif text-3xl">Weds</span>
-                </GoldFoilText>
-                <LotusMotif size={40} color="#c41e3a" className="opacity-60 -scale-x-100" />
-              </div>
-              
-              <GoldFoilText intensity="strong">
-                <p className="font-serif text-5xl font-light tracking-[0.1em] md:text-7xl">
-                  {brideName}
-                </p>
-              </GoldFoilText>
+          <div className="mb-12 text-center">
+            {/* Groom Name */}
+            <PremiumGoldFoil intensity="strong" enableShimmer>
+              <h2 className="mb-4 font-serif text-6xl font-light tracking-[0.15em] md:text-8xl">
+                {groomName}
+              </h2>
+            </PremiumGoldFoil>
+            
+            {/* Divider with Lotus */}
+            <div className="my-8 flex items-center justify-center gap-6">
+              <LotusMotif size={50} color={authenticKankotriColors.kumkumRed} className="opacity-70" />
+              <EmbossedText depth="medium">
+                <span className="font-serif text-3xl tracking-wide" style={{ color: authenticKankotriColors.templeGreen }}>
+                  Weds
+                </span>
+              </EmbossedText>
+              <LotusMotif size={50} color={authenticKankotriColors.kumkumRed} className="opacity-70 -scale-x-100" />
             </div>
+            
+            {/* Bride Name */}
+            <PremiumGoldFoil intensity="strong" enableShimmer>
+              <h2 className="font-serif text-6xl font-light tracking-[0.15em] md:text-8xl">
+                {brideName}
+              </h2>
+            </PremiumGoldFoil>
           </div>
         </ScrollTrigger>
 
         {/* Divider */}
-        <OrnateDivider color={config.colors.secondary} />
+        <OrnateDivider color={authenticKankotriColors.sacredGold} />
 
-        {/* Date with Enhanced Border */}
+        {/* Date with Premium Gold Frame */}
         <ScrollTrigger animation="fade" delay={0.6}>
           <div className="flex justify-center">
-            <GoldFoilBorder className="px-12 py-6 glow-gold">
+            <GoldFoilFrame thickness={3} className="px-16 py-8">
               <div className="text-center">
-                <p className="mb-1 text-sm uppercase tracking-[0.3em] text-[#2d5016]/70">{weekday}</p>
-                <GoldFoilText intensity="strong">
-                  <p className="font-serif text-7xl font-bold">{day}</p>
-                </GoldFoilText>
-                <p className="mt-1 font-serif text-xl text-[#2d5016]">{monthYear}</p>
+                <EmbossedText depth="subtle">
+                  <p className="mb-2 text-[10px] uppercase tracking-[0.35em]" style={{ color: authenticKankotriColors.templeGreen }}>
+                    {weekday}
+                  </p>
+                </EmbossedText>
+                
+                <PremiumGoldFoil intensity="strong" enableShimmer>
+                  <p className="font-serif text-8xl font-bold leading-none">
+                    {day}
+                  </p>
+                </PremiumGoldFoil>
+                
+                <EmbossedText depth="subtle">
+                  <p className="mt-3 font-serif text-2xl" style={{ color: authenticKankotriColors.darkBrown }}>
+                    {monthYear}
+                  </p>
+                </EmbossedText>
               </div>
-            </GoldFoilBorder>
+            </GoldFoilFrame>
           </div>
         </ScrollTrigger>
 
-        {/* Bottom decorative diyas */}
+        {/* Bottom decorative diyas - Reduced to 3 for less clutter */}
         <ScrollTrigger animation="fade" delay={0.8}>
-          <div className="mt-12 flex justify-center gap-8">
-            {[...Array(5)].map((_, i) => (
+          <div className="mt-16 flex justify-center gap-12">
+            {[...Array(3)].map((_, i) => (
               <DiyaMotif
                 key={i}
-                size={50}
-                color="#d4af37"
-                className="opacity-60 animate-pulse"
-                style={{ animationDelay: `${i * 0.2}s` } as any}
+                size={60}
+                color={authenticKankotriColors.sacredGold}
+                className="opacity-70 animate-pulse"
+                style={{ animationDelay: `${i * 0.3}s` } as any}
               />
             ))}
           </div>
