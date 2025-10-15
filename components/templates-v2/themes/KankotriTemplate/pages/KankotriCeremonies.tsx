@@ -12,6 +12,8 @@
 
 import { ScrollTrigger } from '@/components/animations-v2';
 import { TraditionalBorder, OrnateDivider } from '../decorations/TraditionalBorder';
+import { StaggerReveal, StaggerItem } from '../animations/SmoothScrollReveal'; // NEW: Stagger animations!
+import { BounceIcon } from '../micro-interactions'; // NEW: Bounce effect!
 import type { KankotriCeremony } from '@/types/v2/kankotri';
 
 interface KankotriCeremoniesProps {
@@ -40,15 +42,15 @@ export function KankotriCeremonies({ ceremonies, config }: KankotriCeremoniesPro
 
         <OrnateDivider color={config.colors.secondary} />
 
-        {/* Ceremonies Grid */}
-        <div className="grid gap-8 md:grid-cols-2">
+        {/* Ceremonies Grid - UPGRADED with stagger animation! */}
+        <StaggerReveal staggerDelay={0.15} className="grid gap-8 md:grid-cols-2">
           {ceremonies.map((ceremony, index) => (
-            <ScrollTrigger key={ceremony.id} animation="fade" delay={0.3 + index * 0.1}>
+            <StaggerItem key={ceremony.id}>
               <div className="rounded-lg border-2 border-[#2d5016]/20 bg-white/70 p-6 shadow-sm transition-all hover:shadow-md">
-                {/* Ceremony Icon/Emoji */}
-                <div className="mb-3 text-center text-3xl">
+                {/* Ceremony Icon/Emoji - NEW: Bounce on hover! */}
+                <BounceIcon className="mb-3 text-center text-3xl">
                   {getCeremonyEmoji(ceremony.type)}
-                </div>
+                </BounceIcon>
 
                 {/* Ceremony Name */}
                 <h3 className="mb-4 text-center font-serif text-2xl font-bold text-[#c41e3a]">
@@ -83,9 +85,9 @@ export function KankotriCeremonies({ ceremonies, config }: KankotriCeremoniesPro
                   </p>
                 )}
               </div>
-            </ScrollTrigger>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerReveal>
 
         {/* Bottom decorative text */}
         <ScrollTrigger animation="fade" delay={0.8}>

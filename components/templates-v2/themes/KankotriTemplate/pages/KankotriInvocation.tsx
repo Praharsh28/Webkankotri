@@ -12,7 +12,9 @@
 
 import { ScrollTrigger } from '@/components/animations-v2';
 import { GaneshSymbol, OmSymbol } from '../symbols/GaneshSymbol';
+import { ProfessionalGanesh } from '../symbols/ProfessionalGanesh'; // NEW: Professional version!
 import { TraditionalBorder, OrnateDivider } from '../decorations/TraditionalBorder';
+import { ScrollReveal } from '../animations/SmoothScrollReveal'; // NEW: Smooth reveals!
 import type { FamilyHost } from '@/types/v2/kankotri';
 
 interface KankotriInvocationProps {
@@ -54,11 +56,12 @@ export function KankotriInvocation({
       <TraditionalBorder type="full" color={config.colors.primary} />
 
       <div className="container mx-auto max-w-3xl">
-        {/* Ganesh Invocation */}
-        <ScrollTrigger animation="fade" delay={0.2}>
+        {/* Ganesh Invocation - UPGRADED! */}
+        <ScrollReveal animation="scale" delay={0.2}>
           <div className="mb-12 text-center">
+            {/* NEW: Professional Ganesh instead of simple one */}
             <div className="mb-4 flex justify-center">
-              <GaneshSymbol size={100} color={config.colors.secondary} />
+              <ProfessionalGanesh size={140} animate />
             </div>
             
             {/* Om symbol in decorative frame */}
@@ -68,7 +71,7 @@ export function KankotriInvocation({
               </p>
             </div>
           </div>
-        </ScrollTrigger>
+        </ScrollReveal>
 
         <OrnateDivider color={config.colors.secondary} />
 
