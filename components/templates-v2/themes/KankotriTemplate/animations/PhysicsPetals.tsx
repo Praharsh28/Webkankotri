@@ -42,7 +42,7 @@ export function PhysicsPetals({
 }: PhysicsPetalsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const petalsRef = useRef<Petal[]>([]);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
   const windRef = useRef({ x: 0, y: 0 });
   const timeRef = useRef(0);
 
