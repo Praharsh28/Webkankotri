@@ -7,7 +7,12 @@
 
 interface BorderProps {
   type: 'corner' | 'top' | 'bottom' | 'full';
-  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  color?: string;
+  className?: string;
+}
+
+interface CornerProps {
+  position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   color?: string;
   className?: string;
 }
@@ -16,7 +21,7 @@ export function PalmLeaf({
   position = 'top-left',
   color = '#2d5016',
   className = ''
-}: BorderProps) {
+}: CornerProps) {
   const positionClasses = {
     'top-left': 'top-0 left-0',
     'top-right': 'top-0 right-0 -scale-x-100',
@@ -64,7 +69,7 @@ export function FlowerCorner({
   position = 'top-left',
   color = '#d4af37',
   className = ''
-}: BorderProps) {
+}: CornerProps) {
   const positionClasses = {
     'top-left': 'top-2 left-2',
     'top-right': 'top-2 right-2',

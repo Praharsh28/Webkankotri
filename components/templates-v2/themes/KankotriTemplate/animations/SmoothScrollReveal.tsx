@@ -10,8 +10,8 @@
 
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef, ReactNode } from 'react';
+import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
+import { useRef, ReactNode, useEffect } from 'react';
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -155,6 +155,15 @@ export function CountUp({
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const count = useMotionValue(from);
+  const rounded = useTransform(count, (latest) => Math.round(latest));
+
+  useEffect(() => {
+    if (isInView) {
+      const animation = animate(count, to, { duration, ease: 'easeOut' });
+      return animation.stop;
+    }
+  }, [isInView, count, to, duration]);
 
   return (
     <motion.span
@@ -163,13 +172,7 @@ export function CountUp({
       initial={{ opacity: 0 }}
       animate={isInView ? { opacity: 1 } : { opacity: 0 }}
     >
-      <motion.span
-        initial={{ value: from }}
-        animate={isInView ? { value: to } : { value: from }}
-        transition={{ duration, ease: 'easeOut' }}
-      >
-        {({ value }: { value: number }) => Math.round(value)}
-      </motion.span>
+      <motion.span>{rounded}</motion.span>
     </motion.span>
   );
 }
