@@ -45,10 +45,12 @@ export function KankotriInvocation({
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
+    timeZone: 'UTC',
   });
 
   const weekday = weddingDate.toLocaleDateString('en-US', {
     weekday: 'long',
+    timeZone: 'UTC',
   });
 
   return (

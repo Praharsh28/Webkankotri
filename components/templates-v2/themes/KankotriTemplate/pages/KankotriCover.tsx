@@ -48,16 +48,19 @@ export function KankotriCover({
     day: 'numeric',
     month: 'long',
     year: 'numeric',
+    timeZone: 'UTC',
   });
 
   const monthYear = weddingDate.toLocaleDateString('en-US', {
     month: 'long',
     year: 'numeric',
+    timeZone: 'UTC',
   });
 
-  const day = weddingDate.getDate();
+  const day = weddingDate.getUTCDate();
   const weekday = weddingDate.toLocaleDateString('en-US', {
     weekday: 'long',
+    timeZone: 'UTC',
   });
 
   return (

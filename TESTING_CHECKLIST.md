@@ -14,6 +14,7 @@
 - [ ] Page loads successfully
 - [ ] Mobile responsive
 - [ ] Performance >70 (mobile)
+ - [ ] SSR date rendering deterministic (UTC formatting verified)
 
 ### Priority 2: High (Should Pass)
 - [ ] All animations work
@@ -326,6 +327,7 @@ Create comparison screenshots/videos:
 
 ### Fixed Issues:
 - [x] Hydration error (EnhancedPeacock Math.random) - FIXED
+- [x] Hydration error (Date/weekday mismatch) - FIXED (UTC formatting + getUTCDate + input normalization)
 
 ### Potential Issues:
 - [ ] Mobile performance with 50 petals + 80 particles (may need to reduce)

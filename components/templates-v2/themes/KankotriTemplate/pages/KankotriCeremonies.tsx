@@ -62,6 +62,7 @@ export function KankotriCeremonies({ ceremonies, config }: KankotriCeremoniesPro
                   <p className="text-sm uppercase tracking-wider text-[#2d5016]/70">
                     {ceremony.date.toLocaleDateString('en-US', {
                       weekday: 'long',
+                      timeZone: 'UTC',
                     })}
                   </p>
                   <p className="text-lg">
@@ -69,6 +70,7 @@ export function KankotriCeremonies({ ceremonies, config }: KankotriCeremoniesPro
                       day: '2-digit',
                       month: '2-digit',
                       year: 'numeric',
+                      timeZone: 'UTC',
                     })}
                   </p>
                   <p className="flex items-center justify-center gap-2">

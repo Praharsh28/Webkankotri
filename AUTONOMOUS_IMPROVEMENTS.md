@@ -98,3 +98,18 @@
 ---
 
 *This document will be updated as improvements are made*
+
+---
+
+## 🧩 Phase 9: SSR Hydration Fix (Dates) ✅ COMPLETE
+
+**Problem:** Timezone-sensitive date rendering (`toLocaleDateString`, `getDate`) caused SSR/client mismatches.  
+**Solution:** Force UTC in all date formatters and use `getUTCDate()`. Normalize incoming data to real `Date` objects before render.
+
+**Files Updated:**
+- `components/templates-v2/themes/KankotriTemplate/pages/KankotriCover.tsx`
+- `components/templates-v2/themes/KankotriTemplate/pages/KankotriInvocation.tsx`
+- `components/templates-v2/themes/KankotriTemplate/pages/KankotriCeremonies.tsx`
+- `components/templates-v2/themes/KankotriTemplate/KankotriEnhanced.tsx`
+
+**Impact:** Eliminated hydration warnings related to date/weekday rendering. Deterministic output across server and client.

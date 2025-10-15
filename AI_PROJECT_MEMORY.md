@@ -314,6 +314,16 @@ components/
 **Solution:** Use deterministic formulas based on indices  
 **Example:** `((i * 7 + j * 3) % 100) / 100 - 0.5`  
 
+### Issue 1b: Date Hydration Mismatch (Fixed Oct 15, 2025)
+**Problem:** `toLocaleDateString()` and `getDate()` are timezone-sensitive and can render different values on server vs client.  
+**Solution:** Force UTC for all date formatting and use `getUTCDate()`. Normalize incoming data to real `Date` instances before rendering.  
+**Files Updated:**
+- `components/templates-v2/themes/KankotriTemplate/pages/KankotriCover.tsx` (UTC formatting + `getUTCDate()`)
+- `components/templates-v2/themes/KankotriTemplate/pages/KankotriInvocation.tsx` (UTC formatting)
+- `components/templates-v2/themes/KankotriTemplate/pages/KankotriCeremonies.tsx` (UTC formatting)
+- `components/templates-v2/themes/KankotriTemplate/KankotriEnhanced.tsx` (date normalization for wedding and ceremonies)
+
+
 ### Issue 2: Font Loading
 **Problem:** Fonts declared but not loaded  
 **Solution:** Import in globals.css with @import  

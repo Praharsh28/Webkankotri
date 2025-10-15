@@ -33,6 +33,12 @@ interface KankotriEnhancedProps {
 export function KankotriEnhanced({ data }: KankotriEnhancedProps) {
   const config = data.customization || kankotriConfig;
 
+  // Normalize dates to ensure deterministic rendering on server and client
+  const normalizedWeddingDate = new Date((data.wedding as any).date);
+  const normalizedCeremonies = Array.isArray(data.ceremonies)
+    ? data.ceremonies.map((c: any) => ({ ...c, date: new Date(c.date) }))
+    : [];
+
   return (
     <ErrorBoundary>
       <div className="relative min-h-screen" style={{ fontFamily: config.fonts.english }}>
@@ -64,7 +70,7 @@ export function KankotriEnhanced({ data }: KankotriEnhancedProps) {
               <KankotriCover
                 groomName={data.groom.name}
                 brideName={data.bride.name}
-                weddingDate={data.wedding.date}
+                weddingDate={normalizedWeddingDate}
                 couplePhoto={data.couplePhoto}
                 config={config}
               />
@@ -80,7 +86,7 @@ export function KankotriEnhanced({ data }: KankotriEnhancedProps) {
                 brideName={data.bride.name}
                 hosts={data.hosts}
                 venue={data.wedding.venue}
-                weddingDate={data.wedding.date}
+                weddingDate={normalizedWeddingDate}
                 config={config}
               />
             )}
@@ -89,9 +95,9 @@ export function KankotriEnhanced({ data }: KankotriEnhancedProps) {
             <div className="h-8 bg-gradient-to-b from-[#f9f6f0] to-transparent" />
 
             {/* Page 3: Ceremonies */}
-            {data.pages.ceremonies && data.ceremonies.length > 0 && (
+            {data.pages.ceremonies && normalizedCeremonies.length > 0 && (
               <KankotriCeremonies
-                ceremonies={data.ceremonies}
+                ceremonies={normalizedCeremonies}
                 config={config}
               />
             )}

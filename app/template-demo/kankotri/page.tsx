@@ -1,6 +1,6 @@
-import { KankotriTemplate } from '@/components/templates-v2/themes/KankotriTemplate/KankotriTemplate';
 import { exampleKankotri } from '@/lib/data/example-kankotri';
+import { KankotriEnhanced } from '@/components/templates-v2/themes/KankotriTemplate/KankotriEnhanced';
 
 export default function KankotriDemoPage() {
-  return <KankotriTemplate data={exampleKankotri} />;
+  return <KankotriEnhanced data={exampleKankotri} />;
 }
