@@ -20,9 +20,11 @@ import { PageLoader } from '@/components/LoadingStates';
 import type { KankotriData } from '@/types/v2/kankotri';
 import { Suspense } from 'react';
 
-// Expert-level animations
+// MAXIMUM ANIMATIONS - Premium experience
 import { AdvancedParticles } from '@/components/templates-v2/themes/KankotriTemplate/animations/AdvancedParticles';
+import { PhysicsPetals } from '@/components/templates-v2/themes/KankotriTemplate/animations/PhysicsPetals';
 import { GoldDustCursor } from '@/components/templates-v2/themes/KankotriTemplate/animations/GoldDustCursor';
+import { AmbientSound } from '@/components/templates-v2/themes/KankotriTemplate/audio/AmbientSound';
 
 interface ModernKankotriEnhancedProps {
   data: KankotriData;
@@ -46,17 +48,27 @@ export function ModernKankotriEnhanced({ data }: ModernKankotriEnhancedProps) {
         {/* Accessibility */}
         <SkipLink />
 
-        {/* EXPERT ANIMATIONS LAYER */}
+        {/* MAXIMUM ANIMATIONS LAYER - JAW-DROPPING EXPERIENCE */}
         <Suspense fallback={null}>
-          {/* Interactive particle system - modern, clean */}
-          <AdvancedParticles 
-            count={40}
-            interactive
-            connections={false}  // No lines, just particles for modern look
+          {/* Layer 1: Physics-based falling petals (HEAVY - 120 petals!) */}
+          <PhysicsPetals 
+            count={120}
+            windStrength={0.7}
+            colors={['#e8e8ff', '#f0f0ff', '#d8d8ff', '#c8c8ff']}  // Subtle blue/white
           />
           
-          {/* Gold dust cursor trail - premium feel */}
+          {/* Layer 2: Interactive particle network (MASSIVE - 150 particles!) */}
+          <AdvancedParticles 
+            count={150}
+            interactive
+            connections  // Draw connections for complexity
+          />
+          
+          {/* Layer 3: Gold dust cursor trail - enhanced */}
           <GoldDustCursor />
+          
+          {/* Layer 4: Ambient sound (synthesized modern tones) */}
+          <AmbientSound />
         </Suspense>
 
         {/* Animated gradient overlay - living colors */}
