@@ -5,13 +5,16 @@
 
 ---
 
-## 🎯 CORE PRINCIPLE
+## 🎯 CORE PRINCIPLE (UPDATED - Oct 16, 2025)
 
 ```yaml
-priority_1: JAW-DROPPING VISUAL EXPERIENCE
-priority_2: Animations that make experts say "WOW"
-priority_3: Maximum creative expression
-priority_last: Performance/bundle size (we'll handle with loading screens)
+priority_1: MOBILE-FIRST (90% of users view on phones!)
+priority_2: BEAUTIFUL + PERFORMANT (no lag on mobile)
+priority_3: LIGHT/JOYFUL BACKGROUNDS (weddings = happy!)
+priority_4: JAW-DROPPING but USABLE visual experience
+priority_5: Hover effects = DESKTOP ONLY (progressive enhancement)
+
+CRITICAL RULE: Test on mobile FIRST, desktop second
 ```
 
 ---
@@ -36,6 +39,139 @@ correct_approach:
   - Heavy, complex, stunning animations
   - Unique effects competitors can't match
   - Result: "TAKE MY MONEY!" 💰
+```
+
+---
+
+## 📱 MOBILE-FIRST DESIGN RULES (NEW!)
+
+### Background Colors
+```yaml
+NEVER_USE:
+  - Pure black (#000000)
+  - Dark backgrounds (slate-900, etc.)
+  - Why: Weddings = joyful, celebratory, NOT dark!
+
+ALWAYS_USE:
+  - Light joyful colors (whites, creams, pastels)
+  - Soft gradients (subtle, not harsh)
+  - Cultural colors (gold for Indian, etc.)
+  - High contrast text (readable on mobile)
+```
+
+### Hover Effects (Desktop Only!)
+```yaml
+rule: "Hover effects are PROGRESSIVE ENHANCEMENT only"
+
+implementation:
+  - Use @media (hover: hover) { }
+  - Test WITHOUT hover first
+  - Mobile should work perfectly without hover
+  - Desktop gets bonus hover effects
+
+example:
+  /* Mobile (base) */
+  .card { transform: none; }
+  
+  /* Desktop only */
+  @media (hover: hover) {
+    .card:hover { transform: scale(1.05); }
+  }
+```
+
+### Mobile Performance (CINEMATIC APPROACH!)
+```yaml
+particles:
+  mobile: 10-15 (ENOUGH for cinematic feel!)
+  tablet: 20-30
+  desktop: 30-50 (rich experience)
+  
+  why_not_zero: Customers LOVE cinematic particles!
+  key: Smart implementation, not removal
+  
+particle_optimization:
+  mobile:
+    - Smaller size
+    - Slower movement (smoother)
+    - No connections (save CPU)
+    - No interactions (save battery)
+  desktop:
+    - Larger size
+    - Normal speed
+    - Connections enabled
+    - Mouse interactions
+  
+animations:
+  mobile: CSS + lightweight Canvas (optimized!)
+  desktop: Full Canvas effects
+  
+detection:
+  - window.innerWidth (< 768 = mobile)
+  - matchMedia('(hover: hover)') for desktop
+  - Adaptive rendering
+  
+test_on:
+  - iPhone SE (small, slow) ← START HERE
+  - Mid-range Android
+  - iPad (tablet)
+  - Desktop last
+```
+
+---
+
+## 🎬 CINEMATIC EFFECTS (Customers LOVE These!)
+
+### What Makes It "Cinematic"?
+```yaml
+NOT_just_particles:
+  - Movie-quality transitions
+  - Smooth easing (not linear!)
+  - Depth and layers (parallax)
+  - Elegant typography reveals
+  - Gradient animations
+  - Light/shadow play
+  - Professional timing
+
+cinematic_techniques:
+  1. Parallax Scrolling:
+     - Multiple depth layers
+     - Different scroll speeds
+     - Creates 3D illusion
+     
+  2. GSAP Animations:
+     - Timeline orchestration
+     - Smooth easing (Power3, Expo)
+     - Staggered reveals
+     
+  3. Gradient Flows:
+     - Animated color shifts
+     - Shimmer effects
+     - Light ray sweeps
+     
+  4. Typography Dance:
+     - Letter-by-letter reveals
+     - Elegant fades
+     - Scale + opacity combos
+     
+  5. Particles (Smart!):
+     - Mobile: 10-15 (ambient feel)
+     - Desktop: 30-50 (rich atmosphere)
+     - Gold/cultural colors
+```
+
+### Light Backgrounds + Cinematic = PERFECT!
+```yaml
+color_strategy:
+  background: Light (cream, white, soft gradients)
+  particles: Gold/cultural colors (visible + elegant)
+  text: Dark (readable)
+  accents: Vibrant (celebration!)
+  
+  why_it_works:
+    - Light = joyful (wedding mood!)
+    - Dark particles = visible on light
+    - High contrast = mobile readable
+    - Gold = premium feel
 ```
 
 ---

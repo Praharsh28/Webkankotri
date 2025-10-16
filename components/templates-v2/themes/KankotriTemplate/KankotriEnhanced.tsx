@@ -24,7 +24,14 @@ import { AdvancedParticles } from './animations/AdvancedParticles';
 import { AmbientSound } from './audio/AmbientSound';
 import { PageLoader } from '@/components/LoadingStates';
 import type { KankotriData } from '@/types/v2/kankotri';
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
+import { 
+  getParticleCount, 
+  getPetalCount, 
+  shouldEnableInteractions, 
+  shouldEnableConnections,
+  getAnimationSpeed 
+} from '@/lib/utils/device-detection';
 
 interface KankotriEnhancedProps {
   data: KankotriData;
@@ -32,6 +39,22 @@ interface KankotriEnhancedProps {
 
 export function KankotriEnhanced({ data }: KankotriEnhancedProps) {
   const config = data.customization || kankotriConfig;
+
+  // Smart device detection for adaptive animations
+  const [particleCount, setParticleCount] = useState(40); // Default
+  const [petalCount, setPetalCount] = useState(40);
+  const [enableInteractions, setEnableInteractions] = useState(false);
+  const [enableConnections, setEnableConnections] = useState(false);
+  const [animSpeed, setAnimSpeed] = useState(1);
+
+  useEffect(() => {
+    // Detect device and set animation params
+    setParticleCount(getParticleCount());     // Mobile: 12, Desktop: 40
+    setPetalCount(getPetalCount());           // Mobile: 15, Desktop: 40
+    setEnableInteractions(shouldEnableInteractions());  // Desktop only
+    setEnableConnections(shouldEnableConnections());    // Desktop only
+    setAnimSpeed(getAnimationSpeed());        // Mobile: 0.7 (smoother)
+  }, []);
 
   // Normalize dates to ensure deterministic rendering on server and client
   const normalizedWeddingDate = new Date((data.wedding as any).date);
@@ -45,10 +68,17 @@ export function KankotriEnhanced({ data }: KankotriEnhancedProps) {
         {/* Accessibility */}
         <SkipLink />
 
-        {/* Advanced Animations Layer */}
+        {/* SMART Animations Layer - Adapts to device! */}
         <Suspense fallback={null}>
-          <PhysicsPetals count={50} windStrength={0.5} />
-          <AdvancedParticles count={80} interactive connections />
+          <PhysicsPetals 
+            count={petalCount} 
+            windStrength={0.5 * animSpeed} 
+          />
+          <AdvancedParticles 
+            count={particleCount} 
+            interactive={enableInteractions}
+            connections={enableConnections}
+          />
         </Suspense>
 
         {/* Ambient Sound */}
