@@ -29,6 +29,9 @@ import { ProfessionalGanesh } from '../symbols/ProfessionalGanesh'; // NEW: Prof
 import { EnhancedPeacock } from '../symbols/EnhancedPeacock'; // NEW: Intricate peacock!
 import { motion } from 'framer-motion';
 
+// CINEMATIC EFFECTS - Premium GSAP animations!
+import { ParallaxSection, ShimmerText, FadeInStagger } from '@/components/animations/cinematic';
+
 interface KankotriCoverProps {
   groomName: string;
   brideName: string;
@@ -162,12 +165,12 @@ export function KankotriCover({
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
         >
-          {/* Groom Name - Letter by Letter */}
+          {/* Groom Name - CINEMATIC SHIMMER! */}
           <PremiumGoldFoil intensity="strong" enableShimmer>
             <h2 className="mb-6 font-serif text-6xl font-light tracking-[0.15em] md:text-8xl">
-              <TextReveal delay={1.8} staggerDelay={0.05}>
+              <ShimmerText colors={['#d4af37', '#ffffff', '#ffed4e', '#d4af37']} duration={4}>
                 {groomName}
-              </TextReveal>
+              </ShimmerText>
             </h2>
           </PremiumGoldFoil>
           
@@ -195,12 +198,12 @@ export function KankotriCover({
             <LotusBloom size={60} color={authenticKankotriColors.kumkumRed} className="-scale-x-100" />
           </motion.div>
           
-          {/* Bride Name - Letter by Letter */}
+          {/* Bride Name - CINEMATIC SHIMMER! */}
           <PremiumGoldFoil intensity="strong" enableShimmer>
             <h2 className="font-serif text-6xl font-light tracking-[0.15em] md:text-8xl">
-              <TextReveal delay={3.2} staggerDelay={0.05}>
+              <ShimmerText colors={['#d4af37', '#ffffff', '#ffed4e', '#d4af37']} duration={4}>
                 {brideName}
-              </TextReveal>
+              </ShimmerText>
             </h2>
           </PremiumGoldFoil>
         </motion.div>
