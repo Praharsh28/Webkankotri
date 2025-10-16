@@ -25,6 +25,8 @@ import { AdvancedParticles } from '@/components/templates-v2/themes/KankotriTemp
 import { PhysicsPetals } from '@/components/templates-v2/themes/KankotriTemplate/animations/PhysicsPetals';
 import { GoldDustCursor } from '@/components/templates-v2/themes/KankotriTemplate/animations/GoldDustCursor';
 import { AmbientSound } from '@/components/templates-v2/themes/KankotriTemplate/audio/AmbientSound';
+import { MagneticCursor } from './animations/MagneticCursor';
+import { ParticleExplosion } from './animations/ParticleExplosion';
 
 interface ModernKankotriEnhancedProps {
   data: KankotriData;
@@ -69,6 +71,12 @@ export function ModernKankotriEnhanced({ data }: ModernKankotriEnhancedProps) {
           
           {/* Layer 4: Ambient sound (synthesized modern tones) */}
           <AmbientSound />
+          
+          {/* Layer 5: Magnetic cursor (elements follow mouse) */}
+          <MagneticCursor strength={0.6} />
+          
+          {/* Layer 6: Particle explosions on click */}
+          <ParticleExplosion />
         </Suspense>
 
         {/* Animated gradient overlay - living colors */}

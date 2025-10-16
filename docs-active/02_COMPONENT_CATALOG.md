@@ -32,11 +32,11 @@ interface KankotriEnhancedProps {
 - Traditional gold/green color scheme
 ```
 
-### ModernKankotriEnhanced (Minimalist)
+### ModernKankotriEnhanced (PREMIUM EXPERT EDITION) ⭐
 ```typescript
 // FILE: components/templates-v2/themes/ModernKankotri/ModernKankotriEnhanced.tsx
-// PURPOSE: Modern minimalist Kankotri with subtle animations, clean design
-// USAGE: For contemporary couples wanting clean, minimal aesthetic
+// PURPOSE: MAXIMUM ANIMATIONS - Premium modern template with jaw-dropping effects
+// USAGE: High-end weddings, premium clients, WOW factor
 
 import { ModernKankotriEnhanced } from '@/components/templates-v2/themes/ModernKankotri/ModernKankotriEnhanced';
 import { exampleKankotri } from '@/lib/data/example-kankotri';
@@ -48,14 +48,22 @@ interface ModernKankotriEnhancedProps {
   data: KankotriData;  // See 04_TYPE_DEFINITIONS.md
 }
 
-// FEATURES
+// FEATURES - 6 ANIMATION LAYERS! 🚀
 - Normalizes dates (new Date(data.wedding.date))
 - Wraps in ErrorBoundary
-- Minimal animations (FloatingPetals 20 only)
-- Clean typography (Inter + Playfair Display)
-- Modern color scheme (black/gray/blue)
-- Lots of white space
-- 3.74 kB bundle (vs 15.2 kB traditional)
+- Layer 1: PhysicsPetals (120 falling petals with gravity!)
+- Layer 2: AdvancedParticles (150 interactive with connections)
+- Layer 3: GoldDustCursor (premium sparkle trail)
+- Layer 4: AmbientSound (Web Audio API synthesized)
+- Layer 5: MagneticCursor (custom cursor follows smoothly)
+- Layer 6: ParticleExplosion (40-particle burst on click!)
+- Animated gradient overlays (living colors)
+- Scroll reveals on ALL elements
+- Gradient text effects
+- Hover micro-interactions everywhere
+- 5 pages (Cover, Invocation, Ceremonies, Timeline, Venue)
+- Bundle: ~7 kB (HEAVY but worth it for premium pricing)
+- Price point: $150-300 (vs $20 for basic)
 ```
 
 ---
