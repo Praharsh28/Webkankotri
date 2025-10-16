@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Inter, Playfair_Display, Noto_Sans_Gujarati } from 'next/font/google'
 import './globals.css'
 import { ElementSelectorPro } from '@/components/dev-tools/ElementSelectorPro'
+// Initialize GSAP plugins
+import '@/lib/animations/gsap-setup'
 
 const inter = Inter({
   subsets: ['latin'],
