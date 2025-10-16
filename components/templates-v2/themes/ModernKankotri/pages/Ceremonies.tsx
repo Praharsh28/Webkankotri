@@ -1,10 +1,11 @@
 /**
- * Modern Kankotri - Ceremonies Page
- * Clean minimal cards for ceremony list
+ * Modern Kankotri - Ceremonies Page (EXPERT EDITION)
+ * Animated ceremony cards with hover effects and scroll reveals
  */
 
 'use client';
 
+import { ScrollReveal } from '@/components/templates-v2/themes/KankotriTemplate/animations/SmoothScrollReveal';
 import type { KankotriConfig } from '@/types/v2/kankotri';
 
 interface Ceremony {
@@ -25,24 +26,38 @@ interface CeremoniesProps {
 export function Ceremonies({ ceremonies, config }: CeremoniesProps) {
   return (
     <section 
-      className="relative min-h-screen px-6 py-20"
+      className="relative min-h-screen px-6 py-32"
       style={{ backgroundColor: config.colors.background }}
     >
-      <div className="max-w-3xl mx-auto">
-        {/* Simple header */}
-        <h2 
-          className="text-4xl text-center mb-16 font-light tracking-tight"
-          style={{ 
-            fontFamily: config.fonts.decorative,
-            color: config.colors.primary,
-          }}
-        >
-          Wedding Events
-        </h2>
+      <div className="max-w-4xl mx-auto">
+        {/* Animated header */}
+        <ScrollReveal animation="fade" delay={0.1}>
+          <h2 
+            className="text-5xl md:text-6xl text-center mb-6 font-light tracking-tight"
+            style={{ 
+              fontFamily: config.fonts.decorative,
+              background: `linear-gradient(135deg, ${config.colors.primary} 0%, ${config.colors.accent} 100%)`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            Wedding Events
+          </h2>
+          <p 
+            className="text-center text-lg mb-16"
+            style={{ 
+              fontFamily: config.fonts.english,
+              color: config.colors.secondary,
+            }}
+          >
+            Join us for these special celebrations
+          </p>
+        </ScrollReveal>
 
-        {/* Minimal ceremony cards */}
-        <div className="space-y-8">
-          {ceremonies.map((ceremony) => {
+        {/* Animated ceremony cards */}
+        <div className="space-y-6">
+          {ceremonies.map((ceremony, index) => {
             // REQUIRED: UTC-safe date formatting
             const weekday = ceremony.date.toLocaleDateString('en-US', {
               weekday: 'long',
@@ -57,11 +72,15 @@ export function Ceremonies({ ceremonies, config }: CeremoniesProps) {
             });
 
             return (
-              <div 
-                key={ceremony.id}
-                className="border-l-2 pl-6 py-4 transition-all hover:pl-8 duration-300"
-                style={{ borderColor: config.colors.accent }}
+              <ScrollReveal 
+                key={ceremony.id} 
+                animation="slide-up" 
+                delay={0.1 * (index + 2)}
               >
+                <div 
+                  className="bg-white p-8 rounded-2xl border transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 group"
+                  style={{ borderColor: '#f0f0f0' }}
+                >
                 {/* Ceremony name */}
                 <h3 
                   className="text-2xl mb-2 font-light"
@@ -105,7 +124,8 @@ export function Ceremonies({ ceremonies, config }: CeremoniesProps) {
                     {ceremony.venue}
                   </p>
                 </div>
-              </div>
+                </div>
+              </ScrollReveal>
             );
           })}
         </div>

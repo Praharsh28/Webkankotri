@@ -1,9 +1,9 @@
 /**
- * Modern Kankotri Template
+ * Modern Kankotri Template - EXPERT EDITION
  * 
- * Style: Minimalist, clean, contemporary
+ * Style: Sophisticated modern with expert animations
  * Culture: Universal (works for all cultures)
- * Features: Subtle animations, modern typography, lots of white space
+ * Features: Smooth scroll reveals, parallax, gradient animations, interactive particles
  */
 
 'use client';
@@ -14,12 +14,15 @@ import { modernKankotriConfig } from './modern-kankotri-config';
 import { Cover } from './pages/Cover';
 import { Invocation } from './pages/Invocation';
 import { Ceremonies } from './pages/Ceremonies';
+import { Timeline } from './pages/Timeline';
+import { Venue } from './pages/Venue';
 import { PageLoader } from '@/components/LoadingStates';
 import type { KankotriData } from '@/types/v2/kankotri';
 import { Suspense } from 'react';
 
-// Minimal animations for modern style
-import { FloatingPetals } from '@/components/templates-v2/themes/KankotriTemplate/animations/FloatingPetals';
+// Expert-level animations
+import { AdvancedParticles } from '@/components/templates-v2/themes/KankotriTemplate/animations/AdvancedParticles';
+import { GoldDustCursor } from '@/components/templates-v2/themes/KankotriTemplate/animations/GoldDustCursor';
 
 interface ModernKankotriEnhancedProps {
   data: KankotriData;
@@ -43,21 +46,48 @@ export function ModernKankotriEnhanced({ data }: ModernKankotriEnhancedProps) {
         {/* Accessibility */}
         <SkipLink />
 
-        {/* Minimal Animation Layer - subtle floating petals only */}
+        {/* EXPERT ANIMATIONS LAYER */}
         <Suspense fallback={null}>
-          <FloatingPetals 
-            count={20}  // Much less than traditional (was 50)
-            colors={['#f5f5f5', '#e8e8e8', '#fafafa']}  // Subtle grays
+          {/* Interactive particle system - modern, clean */}
+          <AdvancedParticles 
+            count={40}
+            interactive
+            connections={false}  // No lines, just particles for modern look
           />
+          
+          {/* Gold dust cursor trail - premium feel */}
+          <GoldDustCursor />
         </Suspense>
 
-        {/* Subtle grid pattern background */}
+        {/* Animated gradient overlay - living colors */}
         <div 
-          className="pointer-events-none fixed inset-0 z-0 opacity-[0.02]"
+          className="pointer-events-none fixed inset-0 z-0"
+          style={{
+            background: 'radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.03) 0%, transparent 50%)',
+            animation: 'gradient-shift 15s ease infinite',
+          }}
+        />
+
+        {/* Subtle animated mesh gradient */}
+        <div 
+          className="pointer-events-none fixed inset-0 z-0 opacity-[0.015]"
           style={{
             backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 0L30 60M0 30L60 30\' stroke=\'%23000\' stroke-width=\'0.5\' /%3E%3C/svg%3E")',
           }}
         />
+
+        <style jsx global>{`
+          @keyframes gradient-shift {
+            0%, 100% { 
+              transform: translate(0, 0) scale(1);
+              opacity: 0.03;
+            }
+            50% { 
+              transform: translate(10%, 10%) scale(1.1);
+              opacity: 0.05;
+            }
+          }
+        `}</style>
 
         {/* Main Content */}
         <main id="main-content" className="relative z-10">
@@ -88,13 +118,35 @@ export function ModernKankotriEnhanced({ data }: ModernKankotriEnhancedProps) {
               />
             )}
 
-            {/* Divider */}
-            <div className="h-px bg-gray-200 max-w-4xl mx-auto" />
+            {/* Divider with animation */}
+            <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent max-w-4xl mx-auto" />
 
             {/* Page 3: Ceremonies */}
             {data.pages.ceremonies && normalizedCeremonies.length > 0 && (
               <Ceremonies
                 ceremonies={normalizedCeremonies}
+                config={config}
+              />
+            )}
+
+            {/* Divider */}
+            <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent max-w-4xl mx-auto" />
+
+            {/* Page 4: Timeline (NEW) */}
+            <Timeline
+              weddingDate={normalizedWeddingDate}
+              ceremonies={normalizedCeremonies}
+              config={config}
+            />
+
+            {/* Divider */}
+            <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent max-w-4xl mx-auto" />
+
+            {/* Page 5: Venue (NEW) */}
+            {data.pages.venue && (
+              <Venue
+                venue={data.wedding.venue}
+                weddingDate={normalizedWeddingDate}
                 config={config}
               />
             )}
