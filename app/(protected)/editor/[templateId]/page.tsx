@@ -6,11 +6,10 @@
 
 'use client';
 
-import { use } from 'react';
 import { EditorLayout } from '@/components/editor/EditorLayout';
 
-export default function EditorPage({ params }: { params: Promise<{ templateId: string }> }) {
-  const { templateId } = use(params);
+export default function EditorPage({ params }: { params: { templateId: string } }) {
+  const { templateId } = params;
   
   return <EditorLayout templateId={templateId} />;
 }
