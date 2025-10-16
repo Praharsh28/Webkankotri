@@ -12,6 +12,7 @@
 import { ScrollTrigger } from '@/components/animations-v2';
 import { TraditionalBorder, OrnateDivider } from '../decorations/TraditionalBorder';
 import { MapPin, Phone } from 'lucide-react';
+import { MagneticElement, Card3DFlip } from '@/components/animations/cinematic';
 
 interface KankotriVenueProps {
   venue: {
@@ -44,32 +45,36 @@ export function KankotriVenue({ venue, config }: KankotriVenueProps) {
           </div>
         </ScrollTrigger>
 
-        {/* Venue Details */}
+        {/* Venue Details - 3D CARD! */}
         <ScrollTrigger animation="fade" delay={0.4}>
-          <div className="mb-8 rounded-lg border-2 border-[#2d5016]/20 bg-white/70 p-8">
-            <div className="space-y-4 text-center">
-              <div className="flex items-start justify-center gap-3">
-                <MapPin className="mt-1 h-5 w-5 flex-shrink-0 text-[#2d5016]" />
-                <div className="font-light text-[#3e2723]">
-                  <p className="text-lg">{venue.address}</p>
-                  <p>{venue.city}{venue.state && `, ${venue.state}`}</p>
-                  {venue.pincode && <p>{venue.pincode}</p>}
+          <Card3DFlip>
+            <div className="mb-8 rounded-lg border-2 border-[#2d5016]/20 bg-white/70 p-8 transition-all hover:shadow-2xl hover:border-[#d4af37]">
+              <div className="space-y-4 text-center">
+                <div className="flex items-start justify-center gap-3">
+                  <MapPin className="mt-1 h-5 w-5 flex-shrink-0 text-[#2d5016]" />
+                  <div className="font-light text-[#3e2723]">
+                    <p className="text-lg">{venue.address}</p>
+                    <p>{venue.city}{venue.state && `, ${venue.state}`}</p>
+                    {venue.pincode && <p>{venue.pincode}</p>}
+                  </div>
                 </div>
-              </div>
 
-              {venue.phone && (
-                <div className="flex items-center justify-center gap-3">
-                  <Phone className="h-5 w-5 text-[#2d5016]" />
-                  <a
-                    href={`tel:${venue.phone}`}
-                    className="font-light text-[#3e2723] hover:text-[#c41e3a]"
-                  >
-                    {venue.phone}
-                  </a>
-                </div>
-              )}
+                {venue.phone && (
+                  <div className="flex items-center justify-center gap-3">
+                    <Phone className="h-5 w-5 text-[#2d5016]" />
+                    <MagneticElement strength={0.3}>
+                      <a
+                        href={`tel:${venue.phone}`}
+                        className="font-light text-[#3e2723] hover:text-[#c41e3a] transition-colors"
+                      >
+                        {venue.phone}
+                      </a>
+                    </MagneticElement>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </Card3DFlip>
         </ScrollTrigger>
 
         {/* Map */}
