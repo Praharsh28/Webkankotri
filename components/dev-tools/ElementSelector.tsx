@@ -19,6 +19,17 @@ interface SelectedElement {
   text: string;
   tag: string;
   path: string;
+  attributes: { [key: string]: string };
+  computedStyles: {
+    color: string;
+    backgroundColor: string;
+    fontSize: string;
+    fontFamily: string;
+  };
+  dimensions: {
+    width: number;
+    height: number;
+  };
 }
 
 export function ElementSelector() {
@@ -27,20 +38,47 @@ export function ElementSelector() {
   const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // Generate CSS selector for element
+  // Generate CSS selector for element - ENHANCED!
   const generateSelector = (element: HTMLElement): string => {
+    // Priority 1: ID (most specific)
     if (element.id) return `#${element.id}`;
     
-    const classes = Array.from(element.classList).join('.');
     const tag = element.tagName.toLowerCase();
+    const classes = Array.from(element.classList).filter(c => !c.startsWith('hover:') && !c.startsWith('md:'));
     
-    if (classes) return `${tag}.${classes}`;
+    // Priority 2: Unique class combination
+    if (classes.length > 0) {
+      const classSelector = classes.join('.');
+      return `${tag}.${classSelector}`;
+    }
     
-    // Get nth-child if no ID or classes
+    // Priority 3: Attributes (for inputs, buttons, etc.)
+    const name = element.getAttribute('name');
+    if (name) return `${tag}[name="${name}"]`;
+    
+    const type = element.getAttribute('type');
+    if (type) return `${tag}[type="${type}"]`;
+    
+    const role = element.getAttribute('role');
+    if (role) return `${tag}[role="${role}"]`;
+    
+    // Priority 4: Data attributes
+    const dataAttrs = Array.from(element.attributes).filter(attr => attr.name.startsWith('data-'));
+    if (dataAttrs.length > 0) {
+      return `${tag}[${dataAttrs[0].name}="${dataAttrs[0].value}"]`;
+    }
+    
+    // Priority 5: nth-child with parent context
     const parent = element.parentElement;
     if (parent) {
       const siblings = Array.from(parent.children);
       const index = siblings.indexOf(element) + 1;
+      const sameTagSiblings = siblings.filter(s => s.tagName === element.tagName);
+      
+      if (sameTagSiblings.length > 1) {
+        const tagIndex = sameTagSiblings.indexOf(element) + 1;
+        return `${tag}:nth-of-type(${tagIndex})`;
+      }
       return `${tag}:nth-child(${index})`;
     }
     
@@ -60,7 +98,7 @@ export function ElementSelector() {
     return path.join(' > ');
   };
 
-  // Handle element click
+  // Handle element click - ENHANCED!
   const handleElementClick = useCallback((e: MouseEvent) => {
     if (!isActive) return;
     
@@ -75,6 +113,18 @@ export function ElementSelector() {
     const selector = generateSelector(target);
     const path = generatePath(target);
     
+    // Get computed styles
+    const computed = window.getComputedStyle(target);
+    
+    // Get all attributes
+    const attrs: { [key: string]: string } = {};
+    Array.from(target.attributes).forEach(attr => {
+      attrs[attr.name] = attr.value;
+    });
+    
+    // Get dimensions
+    const rect = target.getBoundingClientRect();
+    
     setSelectedElement({
       element: target,
       selector,
@@ -82,6 +132,17 @@ export function ElementSelector() {
       text: target.textContent?.trim().slice(0, 100) || '',
       tag: target.tagName.toLowerCase(),
       path,
+      attributes: attrs,
+      computedStyles: {
+        color: computed.color,
+        backgroundColor: computed.backgroundColor,
+        fontSize: computed.fontSize,
+        fontFamily: computed.fontFamily,
+      },
+      dimensions: {
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+      },
     });
   }, [isActive]);
 
@@ -151,24 +212,61 @@ export function ElementSelector() {
     };
   }, [hoveredElement, isActive]);
 
-  // Copy element info to clipboard
-  const copyToClipboard = () => {
+  // Copy element info to clipboard - FIXED!
+  const copyToClipboard = async () => {
     if (!selectedElement) return;
 
-    const info = `Element Info:
-Tag: <${selectedElement.tag}>
-Selector: ${selectedElement.selector}
-Full Path: ${selectedElement.path}
-Classes: ${selectedElement.classes.join(', ') || 'none'}
-Text: ${selectedElement.text || 'none'}
+    const info = `🎯 ELEMENT INFO (Selected for AI):
 
-Tell AI: "Change the ${selectedElement.tag} element at: ${selectedElement.path}"
+Tag: <${selectedElement.tag}>
+CSS Selector: ${selectedElement.selector}
+Full Path: ${selectedElement.path}
+
+Classes: ${selectedElement.classes.join(', ') || 'none'}
+Text Content: ${selectedElement.text || 'none'}
+
+Dimensions: ${selectedElement.dimensions.width}px × ${selectedElement.dimensions.height}px
+
+Computed Styles:
+- Color: ${selectedElement.computedStyles.color}
+- Background: ${selectedElement.computedStyles.backgroundColor}
+- Font Size: ${selectedElement.computedStyles.fontSize}
+- Font Family: ${selectedElement.computedStyles.fontFamily}
+
+Attributes: ${Object.keys(selectedElement.attributes).length > 0 ? 
+  Object.entries(selectedElement.attributes).map(([k, v]) => `${k}="${v}"`).join(', ') : 
+  'none'}
+
+✨ TELL AI:
+"Change the ${selectedElement.tag} element at:
+${selectedElement.path}
+
+And make it: [describe your changes here]"
 `;
 
-    navigator.clipboard.writeText(info).then(() => {
+    try {
+      // Try modern clipboard API first
+      await navigator.clipboard.writeText(info);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    });
+    } catch (err) {
+      // Fallback to older method
+      const textArea = document.createElement('textarea');
+      textArea.value = info;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err2) {
+        console.error('Copy failed:', err2);
+        alert('Copy failed. Please manually select and copy the text.');
+      }
+      document.body.removeChild(textArea);
+    }
   };
 
   if (!isActive && !selectedElement) return null;
@@ -276,6 +374,45 @@ Tell AI: "Change the ${selectedElement.tag} element at: ${selectedElement.path}"
                 <p className="mt-1 bg-gray-100 px-2 py-1 rounded text-sm italic">
                   "{selectedElement.text}"
                 </p>
+              </div>
+            )}
+
+            {/* Dimensions */}
+            <div>
+              <p className="text-xs font-semibold text-gray-500 uppercase">Dimensions</p>
+              <div className="mt-1 bg-gray-100 px-2 py-1 rounded text-sm flex gap-4">
+                <span><strong>W:</strong> {selectedElement.dimensions.width}px</span>
+                <span><strong>H:</strong> {selectedElement.dimensions.height}px</span>
+              </div>
+            </div>
+
+            {/* Computed Styles */}
+            <div>
+              <p className="text-xs font-semibold text-gray-500 uppercase">Computed Styles</p>
+              <div className="mt-1 bg-gray-100 px-2 py-1 rounded text-xs space-y-1">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded border" style={{ backgroundColor: selectedElement.computedStyles.color }} />
+                  <span className="text-gray-600">Color: {selectedElement.computedStyles.color}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded border" style={{ backgroundColor: selectedElement.computedStyles.backgroundColor }} />
+                  <span className="text-gray-600">BG: {selectedElement.computedStyles.backgroundColor}</span>
+                </div>
+                <div className="text-gray-600">Font: {selectedElement.computedStyles.fontSize}</div>
+              </div>
+            </div>
+
+            {/* Attributes */}
+            {Object.keys(selectedElement.attributes).length > 0 && (
+              <div>
+                <p className="text-xs font-semibold text-gray-500 uppercase">Attributes</p>
+                <div className="mt-1 bg-gray-100 px-2 py-1 rounded text-xs max-h-32 overflow-y-auto">
+                  {Object.entries(selectedElement.attributes).map(([key, value]) => (
+                    <div key={key} className="text-gray-600 mb-1">
+                      <strong>{key}:</strong> "{value.length > 40 ? value.substring(0, 40) + '...' : value}"
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
