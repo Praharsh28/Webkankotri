@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Playfair_Display, Noto_Sans_Gujarati } from 'next/font/google'
 import './globals.css'
-import { ElementSelector } from '@/components/dev-tools/ElementSelector'
+import { ElementSelectorPro } from '@/components/dev-tools/ElementSelectorPro'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -46,8 +46,8 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${gujarati.variable}`}>
       <body className="font-inter antialiased">
         {children}
-        {/* Element Selector - Development Mode Only */}
-        {isDev && <ElementSelector />}
+        {/* Element Selector Pro - Development Mode Only */}
+        {isDev && <ElementSelectorPro />}
       </body>
     </html>
   )
