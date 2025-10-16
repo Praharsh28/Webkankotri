@@ -156,12 +156,17 @@ git add -A && git commit -m "message" && git push origin main
 
 **On new chat start:**
 1. Read this file first (50 lines, always current)
-2. Check "Current State" and "Next Actions"
-3. Read linked docs only if needed for specific task
-4. Update this file after every session (top sections only)
+2. Read `docs-active/00_AI_QUICK_SCAN.md` (10 sec, full context)
+3. Read task-specific docs only as needed
+4. Update docs using `DOCS_MAINTENANCE_RULES.md` guidelines
 
 **Update frequency:**
 - Session #, Commits, Current State → Every session
 - Latest Changes → After major milestones
 - Next Actions → When priorities shift
 - Links/Docs → Rarely (only if new docs created)
+
+**Maintenance:**
+- 📋 **See `DOCS_MAINTENANCE_RULES.md`** for when/where/how to update docs
+- Decision trees, update triggers, location rules all documented
+- Keep docs in sync with code changes (same commit)
