@@ -168,5 +168,12 @@ git add -A && git commit -m "message" && git push origin main
 
 **Maintenance:**
 - 📋 **See `DOCS_MAINTENANCE_RULES.md`** for when/where/how to update docs
+- 🏥 **Run `DOC_HEALTH_CHECK.md` protocol** before commits and at session end (2 min)
 - Decision trees, update triggers, location rules all documented
 - Keep docs in sync with code changes (same commit)
+
+**Balance:**
+- 🎯 Spend 85-90% time BUILDING features
+- 📝 Spend 10-15% time maintaining docs
+- Health checks at natural breakpoints only (commit, session end)
+- Don't disrupt coding flow with constant doc checks
