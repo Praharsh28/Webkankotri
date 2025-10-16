@@ -66,18 +66,18 @@ export function CinematicKankotriEnhanced({ data }: CinematicKankotriEnhancedPro
           {/* Layer 1: Parallax background system (5 depth layers) */}
           <ParallaxLayers scrollY={scrollY} />
           
-          {/* Layer 2: MASSIVE physics petals (200!) */}
+          {/* Layer 2: Reduced petals for performance (40 only!) */}
           <PhysicsPetals 
-            count={200}
-            windStrength={0.9}
-            colors={['#ffd700', '#ffed4e', '#fff9c4', '#fffde7']}  // Gold tones
+            count={40}
+            windStrength={0.5}
+            colors={['#ffd700', '#ffed4e', '#fff9c4']}  // Gold tones
           />
           
-          {/* Layer 3: Particle constellation (200 particles!) */}
+          {/* Layer 3: Reduced particles (50 only - no lag!) */}
           <AdvancedParticles 
-            count={200}
-            interactive
-            connections
+            count={50}
+            interactive={false}
+            connections={false}
           />
           
           {/* Layer 4: Premium gold cursor */}

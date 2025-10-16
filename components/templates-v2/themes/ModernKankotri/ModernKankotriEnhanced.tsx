@@ -44,7 +44,7 @@ export function ModernKankotriEnhanced({ data }: ModernKankotriEnhancedProps) {
   return (
     <ErrorBoundary>
       <div 
-        className="relative min-h-screen bg-white"
+        className="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white"
         style={{ fontFamily: config.fonts.english }}
       >
         {/* Accessibility */}
@@ -52,31 +52,21 @@ export function ModernKankotriEnhanced({ data }: ModernKankotriEnhancedProps) {
 
         {/* MAXIMUM ANIMATIONS LAYER - JAW-DROPPING EXPERIENCE */}
         <Suspense fallback={null}>
-          {/* Layer 1: Physics-based falling petals (HEAVY - 120 petals!) */}
-          <PhysicsPetals 
-            count={120}
-            windStrength={0.7}
-            colors={['#e8e8ff', '#f0f0ff', '#d8d8ff', '#c8c8ff']}  // Subtle blue/white
-          />
+          {/* REDUCED animations - Focus on quality over quantity */}
           
-          {/* Layer 2: Interactive particle network (MASSIVE - 150 particles!) */}
+          {/* Layer 1: Subtle particles (30 only - performance!) */}
           <AdvancedParticles 
-            count={150}
-            interactive
-            connections  // Draw connections for complexity
+            count={30}
+            interactive={false}
+            connections={false}
           />
           
-          {/* Layer 3: Gold dust cursor trail - enhanced */}
-          <GoldDustCursor />
-          
-          {/* Layer 4: Ambient sound (synthesized modern tones) */}
-          <AmbientSound />
-          
-          {/* Layer 5: Magnetic cursor (elements follow mouse) */}
-          <MagneticCursor strength={0.6} />
-          
-          {/* Layer 6: Particle explosions on click */}
-          <ParticleExplosion />
+          {/* Layer 2: Minimal petals (20 only) */}
+          <PhysicsPetals 
+            count={20}
+            windStrength={0.3}
+            colors={['#60a5fa', '#3b82f6', '#2563eb']}  // Visible blue
+          />
         </Suspense>
 
         {/* Animated gradient overlay - living colors */}
