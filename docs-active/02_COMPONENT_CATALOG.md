@@ -6,11 +6,11 @@
 
 ## MAIN WRAPPER
 
-### KankotriEnhanced
+### KankotriEnhanced (Traditional)
 ```typescript
 // FILE: components/templates-v2/themes/KankotriTemplate/KankotriEnhanced.tsx
-// PURPOSE: Main wrapper with animations, error handling, date normalization
-// USAGE: Primary component to render complete template
+// PURPOSE: Traditional Kankotri with heavy animations, professional SVGs
+// USAGE: For traditional Gujarati weddings with authentic cultural elements
 
 import { KankotriEnhanced } from '@/components/templates-v2/themes/KankotriTemplate/KankotriEnhanced';
 import { exampleKankotri } from '@/lib/data/example-kankotri';
@@ -25,10 +25,37 @@ interface KankotriEnhancedProps {
 // FEATURES
 - Normalizes dates (new Date(data.wedding.date))
 - Wraps in ErrorBoundary
-- Adds PhysicsPetals + AdvancedParticles
+- Heavy animations (PhysicsPetals 50 + AdvancedParticles 80)
 - Includes AmbientSound
-- Adds SkipLink for accessibility
+- Professional SVG symbols (Ganesh, Peacock)
 - Paper texture background overlay
+- Traditional gold/green color scheme
+```
+
+### ModernKankotriEnhanced (Minimalist)
+```typescript
+// FILE: components/templates-v2/themes/ModernKankotri/ModernKankotriEnhanced.tsx
+// PURPOSE: Modern minimalist Kankotri with subtle animations, clean design
+// USAGE: For contemporary couples wanting clean, minimal aesthetic
+
+import { ModernKankotriEnhanced } from '@/components/templates-v2/themes/ModernKankotri/ModernKankotriEnhanced';
+import { exampleKankotri } from '@/lib/data/example-kankotri';
+
+<ModernKankotriEnhanced data={exampleKankotri} />
+
+// PROPS
+interface ModernKankotriEnhancedProps {
+  data: KankotriData;  // See 04_TYPE_DEFINITIONS.md
+}
+
+// FEATURES
+- Normalizes dates (new Date(data.wedding.date))
+- Wraps in ErrorBoundary
+- Minimal animations (FloatingPetals 20 only)
+- Clean typography (Inter + Playfair Display)
+- Modern color scheme (black/gray/blue)
+- Lots of white space
+- 3.74 kB bundle (vs 15.2 kB traditional)
 ```
 
 ---
