@@ -62,8 +62,44 @@ interface ModernKankotriEnhancedProps {
 - Gradient text effects
 - Hover micro-interactions everywhere
 - 5 pages (Cover, Invocation, Ceremonies, Timeline, Venue)
-- Bundle: ~7 kB (HEAVY but worth it for premium pricing)
+- Bundle: ~6 kB (HEAVY but worth it for premium pricing)
 - Price point: $150-300 (vs $20 for basic)
+```
+
+### CinematicKankotriEnhanced (ULTRA PREMIUM CINEMATIC) 🎬⭐⭐⭐
+```typescript
+// FILE: components/templates-v2/themes/CinematicKankotri/CinematicKankotriEnhanced.tsx
+// PURPOSE: ULTRA PREMIUM - Movie-quality cinematic template with 3D effects
+// USAGE: Ultra-premium weddings, celebrity events, $500+ price point
+
+import { CinematicKankotriEnhanced } from '@/components/templates-v2/themes/CinematicKankotri/CinematicKankotriEnhanced';
+import { exampleKankotri } from '@/lib/data/example-kankotri';
+
+<CinematicKankotriEnhanced data={exampleKankotri} />
+
+// PROPS
+interface CinematicKankotriEnhancedProps {
+  data: KankotriData;  // See 04_TYPE_DEFINITIONS.md
+}
+
+// FEATURES - 8+ ANIMATION LAYERS! 🎬
+- BLACK + GOLD cinematic color scheme
+- 3D PERSPECTIVE transforms (rotateX, rotateY, translateZ)
+- 5-LAYER PARALLAX system (each layer different speed)
+- PhysicsPetals (200 falling - MASSIVE!)
+- AdvancedParticles (200 with connections - HUGE!)
+- Mouse-tracking 3D TILT effect (follows cursor)
+- Cinematic wipe transitions
+- Film grain + vignette overlay
+- Animated light rays sweeping
+- Shimmer gradient text (animated)
+- 3D card flip effects on hover
+- Cinematic glow effects
+- Letterbox bars (movie style)
+- GoldDustCursor + AmbientSound
+- Bundle: ~4.3 kB (lightweight but ULTRA premium!)
+- Price point: $500-2000 (ultra-premium tier)
+- Demo: /template-demo/cinematic-kankotri
 ```
 
 ---
