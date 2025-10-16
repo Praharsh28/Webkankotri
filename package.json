@@ -62,8 +62,7 @@
     "use-sound": "^5.0.0",
     "uuid": "^13.0.0",
     "yet-another-react-lightbox": "^3.25.0",
-    "zod": "^4.1.12",
-    "zustand": "^5.0.8"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/animejs": "^3.1.13",
