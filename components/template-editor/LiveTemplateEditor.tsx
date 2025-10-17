@@ -11,6 +11,7 @@ import { Save, Eye, EyeOff, Undo, Redo, Download } from 'lucide-react';
 import { QuickEditPanel } from './QuickEditPanel';
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
+import './editor-animations.css';
 
 interface ElementChange {
   selector: string;
@@ -158,37 +159,88 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
     };
   };
   
-  // Generate CSS selector
+  // Generate unique CSS selector
   const getCssSelector = (element: Element): string => {
+    // If has ID, use it
     if (element.id) return `#${element.id}`;
     
+    // Try to build a unique path
     const tag = element.tagName.toLowerCase();
     const classes = Array.from(element.classList)
-      .filter(c => !c.startsWith('hover:') && !c.startsWith('md:') && !c.startsWith('lg:'))
-      .slice(0, 3) // Take first 3 classes
-      .join('.');
+      .filter(c => 
+        !c.startsWith('hover:') && 
+        !c.startsWith('md:') && 
+        !c.startsWith('lg:') &&
+        !c.startsWith('sm:') &&
+        !c.startsWith('xl:') &&
+        !c.startsWith('dark:') &&
+        !c.startsWith('group-') &&
+        !c.startsWith('peer-')
+      )
+      .slice(0, 4); // Take first 4 non-responsive classes
     
-    if (classes) return `${tag}.${classes}`;
+    // Build selector with classes
+    if (classes.length > 0) {
+      const classSelector = `${tag}.${classes.join('.')}`;
+      
+      // Make it more specific by adding parent context
+      const parent = element.parentElement;
+      if (parent && parent.tagName !== 'BODY') {
+        const parentTag = parent.tagName.toLowerCase();
+        const parentClasses = Array.from(parent.classList)
+          .filter(c => !c.startsWith('hover:') && !c.startsWith('md:'))
+          .slice(0, 2)
+          .join('.');
+        
+        if (parentClasses) {
+          return `${parentTag}.${parentClasses} > ${classSelector}`;
+        }
+        return `${parentTag} > ${classSelector}`;
+      }
+      
+      return classSelector;
+    }
+    
+    // Fallback: Use nth-of-type
+    const parent = element.parentElement;
+    if (parent) {
+      const siblings = Array.from(parent.children).filter(
+        child => child.tagName === element.tagName
+      );
+      const index = siblings.indexOf(element) + 1;
+      if (siblings.length > 1) {
+        return `${tag}:nth-of-type(${index})`;
+      }
+    }
     
     return tag;
   };
   
-  // Apply changes to DOM
+  // Apply changes to DOM with STRONG overrides
   const applyChange = useCallback((change: ElementChange) => {
     const elements = document.querySelectorAll(change.selector);
     
     elements.forEach((el) => {
       const htmlEl = el as HTMLElement;
       
+      // Mark as edited
+      htmlEl.setAttribute('data-template-edited', 'true');
+      
       // Apply text
       if (change.text !== undefined && change.type === 'text') {
+        // Clear existing text nodes
         htmlEl.textContent = change.text;
       }
       
-      // Apply styles
+      // Apply styles with !important for stronger override
       if (change.styles) {
         Object.entries(change.styles).forEach(([key, value]) => {
-          htmlEl.style[key as any] = value;
+          // Use setProperty with !important to override everything
+          htmlEl.style.setProperty(
+            key.replace(/([A-Z])/g, '-$1').toLowerCase(),
+            value,
+            'important'
+          );
         });
       }
       
@@ -199,9 +251,28 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
         });
       }
       
-      // Apply animation
-      if (change.animation && change.animation !== 'none') {
-        htmlEl.style.animation = `${change.animation} 0.5s ease-out`;
+      // Handle animations - CLEAR existing animations first!
+      if (change.animation) {
+        // Remove all existing animation classes and inline animations
+        htmlEl.style.animation = 'none';
+        
+        // Force reflow to reset animation
+        void htmlEl.offsetWidth;
+        
+        if (change.animation !== 'none') {
+          // Apply new animation with !important
+          htmlEl.style.setProperty('animation', `${change.animation} 0.6s ease-out forwards`, 'important');
+          
+          // Also add as CSS class for better control
+          htmlEl.classList.add(`anim-${change.animation}`);
+        }
+      }
+      
+      // Disable framer-motion on this element if present
+      if (htmlEl.hasAttribute('style') && htmlEl.style.transform) {
+        // Keep transform but override animation
+        const transform = htmlEl.style.transform;
+        htmlEl.style.setProperty('animation', change.animation && change.animation !== 'none' ? `${change.animation} 0.6s ease-out forwards` : 'none', 'important');
       }
     });
   }, []);
@@ -374,7 +445,11 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
       )}
       
       {/* Template Container */}
-      <div ref={templateRef} className="relative">
+      <div 
+        ref={templateRef} 
+        className="relative"
+        data-preview-mode={!isEditMode ? 'true' : undefined}
+      >
         {children}
       </div>
       

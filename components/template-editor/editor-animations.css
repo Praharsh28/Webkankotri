@@ -1,0 +1,145 @@
+/**
+ * Template Editor Animations
+ * 
+ * CSS keyframes for editor-applied animations
+ */
+
+/* Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide Up */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide Down */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide Left */
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide Right */
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Zoom In */
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Zoom Out */
+@keyframes zoomOut {
+  from {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animation classes for stronger specificity */
+[data-template-edited] {
+  animation-fill-mode: forwards !important;
+}
+
+[data-template-edited].anim-fadeIn {
+  animation: fadeIn 0.6s ease-out forwards !important;
+}
+
+[data-template-edited].anim-slideUp {
+  animation: slideUp 0.6s ease-out forwards !important;
+}
+
+[data-template-edited].anim-slideDown {
+  animation: slideDown 0.6s ease-out forwards !important;
+}
+
+[data-template-edited].anim-slideLeft {
+  animation: slideLeft 0.6s ease-out forwards !important;
+}
+
+[data-template-edited].anim-slideRight {
+  animation: slideRight 0.6s ease-out forwards !important;
+}
+
+[data-template-edited].anim-zoomIn {
+  animation: zoomIn 0.6s ease-out forwards !important;
+}
+
+[data-template-edited].anim-zoomOut {
+  animation: zoomOut 0.6s ease-out forwards !important;
+}
+
+/* Visual indicator for edited elements */
+[data-template-edited] {
+  position: relative !important;
+}
+
+[data-template-edited]::after {
+  content: '✏️' !important;
+  position: absolute !important;
+  top: -8px !important;
+  right: -8px !important;
+  background: #3b82f6 !important;
+  color: white !important;
+  font-size: 10px !important;
+  padding: 2px 4px !important;
+  border-radius: 4px !important;
+  z-index: 9999 !important;
+  pointer-events: none !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+}
+
+/* Hide badge in preview mode */
+[data-preview-mode] [data-template-edited]::after {
+  display: none !important;
+}
