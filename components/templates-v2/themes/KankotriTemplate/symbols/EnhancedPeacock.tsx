@@ -20,6 +20,9 @@ export function EnhancedPeacock({
   animate = true,
   className = '' 
 }: EnhancedPeacockProps) {
+  // Helper to round numbers for consistent SSR/client rendering
+  const round = (num: number) => Math.round(num * 100) / 100;
+
   return (
     <svg
       width={size}
@@ -34,10 +37,10 @@ export function EnhancedPeacock({
         {[...Array(11)].map((_, i) => {
           const angle = (i - 5) * 15;
           const rad = (angle * Math.PI) / 180;
-          const x = 100 + Math.sin(rad) * 75;
-          const y = 120 - Math.abs(Math.cos(rad)) * 50;
-          const eyeX = 100 + Math.sin(rad) * 85;
-          const eyeY = 120 - Math.abs(Math.cos(rad)) * 60;
+          const x = round(100 + Math.sin(rad) * 75);
+          const y = round(120 - Math.abs(Math.cos(rad)) * 50);
+          const eyeX = round(100 + Math.sin(rad) * 85);
+          const eyeY = round(120 - Math.abs(Math.cos(rad)) * 60);
 
           return (
             <g key={i}>
@@ -105,14 +108,14 @@ export function EnhancedPeacock({
               {/* Feather barbs (fine details) - Fixed for SSR */}
               {[...Array(5)].map((_, j) => {
                 const progress = j / 5;
-                const barbX = 100 + Math.sin(rad) * 75 * progress;
-                const barbY = 120 - Math.abs(Math.cos(rad)) * 50 * progress;
+                const barbX = round(100 + Math.sin(rad) * 75 * progress);
+                const barbY = round(120 - Math.abs(Math.cos(rad)) * 50 * progress);
                 // Use deterministic variation based on i and j instead of random
                 const variation = ((i * 7 + j * 3) % 100) / 100 - 0.5;
                 const barbAngle = angle + variation * 30;
                 const barbRad = (barbAngle * Math.PI) / 180;
-                const barbEndX = barbX + Math.sin(barbRad) * 8;
-                const barbEndY = barbY - Math.abs(Math.cos(barbRad)) * 8;
+                const barbEndX = round(barbX + Math.sin(barbRad) * 8);
+                const barbEndY = round(barbY - Math.abs(Math.cos(barbRad)) * 8);
 
                 return (
                   <line
