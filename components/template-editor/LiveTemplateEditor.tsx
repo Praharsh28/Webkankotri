@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 import './editor-animations.css';
 
 interface ElementChange {
-  selector: string;
+  elementId: string; // Unique ID for the element
   type: 'text' | 'image' | 'container';
   text?: string;
   styles?: Record<string, string>;
@@ -100,9 +100,12 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
       e.preventDefault();
       e.stopPropagation();
       
+      // Mark element with unique ID
+      const elementId = getElementId(target);
+      
       const info = extractElementInfo(target);
       setSelectedElement(target);
-      setSelectedElementInfo(info);
+      setSelectedElementInfo({ ...info, elementId });
       removeOverlay();
     };
     
@@ -133,11 +136,8 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
       attrs[attr.name] = attr.value;
     });
     
-    const selector = getCssSelector(element);
-    
     return {
       tag: element.tagName.toLowerCase(),
-      selector,
       text: element.textContent?.trim() || '',
       styles: {
         color: computed.color,
@@ -159,122 +159,77 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
     };
   };
   
-  // Generate unique CSS selector
-  const getCssSelector = (element: Element): string => {
-    // If has ID, use it
-    if (element.id) return `#${element.id}`;
-    
-    // Try to build a unique path
-    const tag = element.tagName.toLowerCase();
-    const classes = Array.from(element.classList)
-      .filter(c => 
-        !c.startsWith('hover:') && 
-        !c.startsWith('md:') && 
-        !c.startsWith('lg:') &&
-        !c.startsWith('sm:') &&
-        !c.startsWith('xl:') &&
-        !c.startsWith('dark:') &&
-        !c.startsWith('group-') &&
-        !c.startsWith('peer-')
-      )
-      .slice(0, 4); // Take first 4 non-responsive classes
-    
-    // Build selector with classes
-    if (classes.length > 0) {
-      const classSelector = `${tag}.${classes.join('.')}`;
-      
-      // Make it more specific by adding parent context
-      const parent = element.parentElement;
-      if (parent && parent.tagName !== 'BODY') {
-        const parentTag = parent.tagName.toLowerCase();
-        const parentClasses = Array.from(parent.classList)
-          .filter(c => !c.startsWith('hover:') && !c.startsWith('md:'))
-          .slice(0, 2)
-          .join('.');
-        
-        if (parentClasses) {
-          return `${parentTag}.${parentClasses} > ${classSelector}`;
-        }
-        return `${parentTag} > ${classSelector}`;
-      }
-      
-      return classSelector;
-    }
-    
-    // Fallback: Use nth-of-type
-    const parent = element.parentElement;
-    if (parent) {
-      const siblings = Array.from(parent.children).filter(
-        child => child.tagName === element.tagName
-      );
-      const index = siblings.indexOf(element) + 1;
-      if (siblings.length > 1) {
-        return `${tag}:nth-of-type(${index})`;
-      }
-    }
-    
-    return tag;
+  // Generate unique ID for element
+  const generateElementId = (): string => {
+    return `elem-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   };
   
-  // Apply changes to DOM with STRONG overrides
-  const applyChange = useCallback((change: ElementChange) => {
-    const elements = document.querySelectorAll(change.selector);
+  // Get or create unique ID for element
+  const getElementId = (element: Element): string => {
+    const htmlEl = element as HTMLElement;
     
-    elements.forEach((el) => {
-      const htmlEl = el as HTMLElement;
+    // Check if already has our ID
+    let elementId = htmlEl.getAttribute('data-element-id');
+    
+    if (!elementId) {
+      // Generate and assign new ID
+      elementId = generateElementId();
+      htmlEl.setAttribute('data-element-id', elementId);
+    }
+    
+    return elementId;
+  };
+  
+  // Apply changes to DOM using unique element ID
+  const applyChange = useCallback((change: ElementChange) => {
+    // Find element by unique ID
+    const element = document.querySelector(`[data-element-id="${change.elementId}"]`);
+    
+    if (!element) {
+      console.warn('Element not found:', change.elementId);
+      return;
+    }
+    
+    const htmlEl = element as HTMLElement;
+    
+    // Mark as edited
+    htmlEl.setAttribute('data-template-edited', 'true');
+    
+    // Apply text
+    if (change.text !== undefined && change.type === 'text') {
+      htmlEl.textContent = change.text;
+    }
+    
+    // Apply styles with !important
+    if (change.styles) {
+      Object.entries(change.styles).forEach(([key, value]) => {
+        // Convert camelCase to kebab-case
+        const cssProperty = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+        htmlEl.style.setProperty(cssProperty, value, 'important');
+      });
+    }
+    
+    // Apply attributes
+    if (change.attributes) {
+      Object.entries(change.attributes).forEach(([key, value]) => {
+        htmlEl.setAttribute(key, value);
+      });
+    }
+    
+    // Handle animations
+    if (change.animation !== undefined) {
+      // Remove existing animation classes
+      htmlEl.className = htmlEl.className.replace(/anim-\w+/g, '').trim();
       
-      // Mark as edited
-      htmlEl.setAttribute('data-template-edited', 'true');
+      // Clear inline animation
+      htmlEl.style.animation = 'none';
+      void htmlEl.offsetWidth; // Force reflow
       
-      // Apply text
-      if (change.text !== undefined && change.type === 'text') {
-        // Clear existing text nodes
-        htmlEl.textContent = change.text;
+      if (change.animation !== 'none') {
+        htmlEl.style.setProperty('animation', `${change.animation} 0.6s ease-out forwards`, 'important');
+        htmlEl.classList.add(`anim-${change.animation}`);
       }
-      
-      // Apply styles with !important for stronger override
-      if (change.styles) {
-        Object.entries(change.styles).forEach(([key, value]) => {
-          // Use setProperty with !important to override everything
-          htmlEl.style.setProperty(
-            key.replace(/([A-Z])/g, '-$1').toLowerCase(),
-            value,
-            'important'
-          );
-        });
-      }
-      
-      // Apply attributes
-      if (change.attributes) {
-        Object.entries(change.attributes).forEach(([key, value]) => {
-          htmlEl.setAttribute(key, value);
-        });
-      }
-      
-      // Handle animations - CLEAR existing animations first!
-      if (change.animation) {
-        // Remove all existing animation classes and inline animations
-        htmlEl.style.animation = 'none';
-        
-        // Force reflow to reset animation
-        void htmlEl.offsetWidth;
-        
-        if (change.animation !== 'none') {
-          // Apply new animation with !important
-          htmlEl.style.setProperty('animation', `${change.animation} 0.6s ease-out forwards`, 'important');
-          
-          // Also add as CSS class for better control
-          htmlEl.classList.add(`anim-${change.animation}`);
-        }
-      }
-      
-      // Disable framer-motion on this element if present
-      if (htmlEl.hasAttribute('style') && htmlEl.style.transform) {
-        // Keep transform but override animation
-        const transform = htmlEl.style.transform;
-        htmlEl.style.setProperty('animation', change.animation && change.animation !== 'none' ? `${change.animation} 0.6s ease-out forwards` : 'none', 'important');
-      }
-    });
+    }
   }, []);
   
   // Handle apply from QuickEditPanel
@@ -283,7 +238,7 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
     
     // Add to changes array
     const newChanges = [...changes];
-    const existingIndex = newChanges.findIndex(c => c.selector === change.selector);
+    const existingIndex = newChanges.findIndex(c => c.elementId === change.elementId);
     
     if (existingIndex >= 0) {
       newChanges[existingIndex] = { ...newChanges[existingIndex], ...change };

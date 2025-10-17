@@ -15,7 +15,7 @@ import { ImageUploadField } from './fields/ImageUploadField';
 
 interface ElementInfo {
   tag: string;
-  selector: string;
+  elementId: string;
   text: string;
   styles: {
     color: string;
@@ -77,7 +77,7 @@ export function QuickEditPanel({ element, elementInfo, onClose, onApply }: Quick
   
   const handleApply = () => {
     const changes: any = {
-      selector: elementInfo.selector,
+      elementId: elementInfo.elementId,
       type: elementType,
     };
     
@@ -143,7 +143,7 @@ export function QuickEditPanel({ element, elementInfo, onClose, onApply }: Quick
             <strong>Element:</strong> <code className="bg-white px-1.5 py-0.5 rounded">&lt;{elementInfo.tag}&gt;</code>
           </p>
           <p className="text-xs text-gray-600 mt-1">
-            <strong>Selector:</strong> <code className="bg-white px-1.5 py-0.5 rounded text-xs">{elementInfo.selector}</code>
+            <strong>ID:</strong> <code className="bg-white px-1.5 py-0.5 rounded text-xs">{elementInfo.elementId}</code>
           </p>
         </div>
         
