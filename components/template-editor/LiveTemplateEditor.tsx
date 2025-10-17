@@ -103,6 +103,7 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
     
     let hoveredElement: Element | null = null;
     let overlay: HTMLDivElement | null = null;
+    let rafId: number | null = null;
     
     const createOverlay = () => {
       overlay = document.createElement('div');
@@ -111,7 +112,7 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
       overlay.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
       overlay.style.pointerEvents = 'none';
       overlay.style.zIndex = '9997';
-      overlay.style.transition = 'all 0.1s ease';
+      overlay.style.transition = 'all 0.05s ease';
       overlay.setAttribute('data-template-editor-overlay', 'true');
       document.body.appendChild(overlay);
     };
@@ -143,8 +144,15 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
       
       if (target !== hoveredElement) {
         hoveredElement = target;
-        if (!overlay) createOverlay();
-        updateOverlay(target);
+        
+        // Throttle with requestAnimationFrame for smooth 60fps
+        if (rafId) return;
+        
+        rafId = requestAnimationFrame(() => {
+          if (!overlay) createOverlay();
+          if (hoveredElement) updateOverlay(hoveredElement);
+          rafId = null;
+        });
       }
     };
     
@@ -170,7 +178,12 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
     };
     
     const handleScroll = () => {
-      if (hoveredElement) updateOverlay(hoveredElement);
+      // Throttle scroll updates too
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        if (hoveredElement) updateOverlay(hoveredElement);
+        rafId = null;
+      });
     };
     
     createOverlay();
@@ -180,6 +193,7 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
     
     return () => {
       removeOverlay();
+      if (rafId) cancelAnimationFrame(rafId);
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('click', handleClick, true);
       window.removeEventListener('scroll', handleScroll);
