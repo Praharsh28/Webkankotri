@@ -37,6 +37,67 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
   const [isSaving, setIsSaving] = useState(false);
   const templateRef = useRef<HTMLDivElement>(null);
   
+  // Apply changes to DOM using unique element ID
+  const applyChange = useCallback((change: ElementChange) => {
+    const element = document.querySelector(`[data-element-id=\"${change.elementId}\"]`);
+    
+    if (!element) {
+      console.warn('Element not found:', change.elementId);
+      return;
+    }
+    
+    const htmlEl = element as HTMLElement;
+    htmlEl.setAttribute('data-template-edited', 'true');
+    
+    if (change.text !== undefined && change.type === 'text') {
+      htmlEl.textContent = change.text;
+    }
+    
+    if (change.styles) {
+      Object.entries(change.styles).forEach(([key, value]) => {
+        const cssProperty = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+        htmlEl.style.setProperty(cssProperty, value, 'important');
+      });
+    }
+    
+    if (change.attributes) {
+      Object.entries(change.attributes).forEach(([key, value]) => {
+        htmlEl.setAttribute(key, value);
+      });
+    }
+    
+    if (change.animation !== undefined) {
+      htmlEl.className = htmlEl.className.replace(/anim-\\w+/g, '').trim();
+      htmlEl.style.animation = 'none';
+      void htmlEl.offsetWidth;
+      
+      if (change.animation !== 'none') {
+        htmlEl.style.setProperty('animation', `${change.animation} 0.6s ease-out forwards`, 'important');
+        htmlEl.classList.add(`anim-${change.animation}`);
+      }
+    }
+  }, []);
+  
+  // Load saved changes on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('template-editor-save');
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data.changes && Array.isArray(data.changes)) {
+          setChanges(data.changes);
+          setHistory([data.changes]);
+          setHistoryIndex(0);
+          setTimeout(() => {
+            data.changes.forEach((change: ElementChange) => applyChange(change));
+          }, 100);
+        }
+      }
+    } catch (error) {
+      console.error('Load error:', error);
+    }
+  }, [applyChange]);
+  
   // Element selector logic
   useEffect(() => {
     if (!isEditMode || !templateRef.current) return;
@@ -180,58 +241,6 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
     return elementId;
   };
   
-  // Apply changes to DOM using unique element ID
-  const applyChange = useCallback((change: ElementChange) => {
-    // Find element by unique ID
-    const element = document.querySelector(`[data-element-id="${change.elementId}"]`);
-    
-    if (!element) {
-      console.warn('Element not found:', change.elementId);
-      return;
-    }
-    
-    const htmlEl = element as HTMLElement;
-    
-    // Mark as edited
-    htmlEl.setAttribute('data-template-edited', 'true');
-    
-    // Apply text
-    if (change.text !== undefined && change.type === 'text') {
-      htmlEl.textContent = change.text;
-    }
-    
-    // Apply styles with !important
-    if (change.styles) {
-      Object.entries(change.styles).forEach(([key, value]) => {
-        // Convert camelCase to kebab-case
-        const cssProperty = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-        htmlEl.style.setProperty(cssProperty, value, 'important');
-      });
-    }
-    
-    // Apply attributes
-    if (change.attributes) {
-      Object.entries(change.attributes).forEach(([key, value]) => {
-        htmlEl.setAttribute(key, value);
-      });
-    }
-    
-    // Handle animations
-    if (change.animation !== undefined) {
-      // Remove existing animation classes
-      htmlEl.className = htmlEl.className.replace(/anim-\w+/g, '').trim();
-      
-      // Clear inline animation
-      htmlEl.style.animation = 'none';
-      void htmlEl.offsetWidth; // Force reflow
-      
-      if (change.animation !== 'none') {
-        htmlEl.style.setProperty('animation', `${change.animation} 0.6s ease-out forwards`, 'important');
-        htmlEl.classList.add(`anim-${change.animation}`);
-      }
-    }
-  }, []);
-  
   // Handle apply from QuickEditPanel
   const handleApplyChange = (change: ElementChange) => {
     applyChange(change);
@@ -287,21 +296,15 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const supabase = createClient();
-      
-      const templateData = {
-        id: templateId || Date.now().toString(),
-        changes: JSON.stringify(changes),
-        updated_at: new Date().toISOString(),
+      // Save to localStorage for now
+      const saveData = {
+        id: templateId || 'default',
+        changes,
+        timestamp: new Date().toISOString(),
       };
       
-      const { error } = await supabase
-        .from('template_changes')
-        .upsert(templateData as any);
-      
-      if (error) throw error;
-      
-      toast.success('Template saved!');
+      localStorage.setItem('template-editor-save', JSON.stringify(saveData));
+      toast.success(`Template saved! (${changes.length} changes)`);
     } catch (error: any) {
       console.error('Save error:', error);
       toast.error('Failed to save template');
@@ -391,8 +394,8 @@ export function LiveTemplateEditor({ templateId, children }: LiveTemplateEditorP
       </div>
       
       {/* Edit mode indicator */}
-      {isEditMode && (
-        <div data-template-editor className="fixed top-20 left-1/2 -translate-x-1/2 z-[9998] bg-green-600 text-white px-6 py-3 rounded-lg shadow-2xl animate-bounce">
+      {isEditMode && !selectedElement && (
+        <div data-template-editor className="fixed top-20 left-1/2 -translate-x-1/2 z-[9998] bg-green-600 text-white px-6 py-3 rounded-lg shadow-2xl">
           <p className="text-sm font-semibold">
             🎯 Click any element to edit it!
           </p>
