@@ -9,7 +9,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Save, Eye, EyeOff, Undo, Redo, Download } from 'lucide-react';
 import { QuickEditPanel } from './QuickEditPanel';
-import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 import './editor-animations.css';
 

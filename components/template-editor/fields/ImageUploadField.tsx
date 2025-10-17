@@ -1,14 +1,13 @@
 /**
  * Image Upload Field
  * 
- * Allows uploading to Supabase Storage or pasting URL
+ * Upload local image (converts to base64) or paste URL
  */
 
 'use client';
 
 import { useState, useRef } from 'react';
 import { Upload, Link as LinkIcon, X } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 
 interface ImageUploadFieldProps {
@@ -40,37 +39,25 @@ export function ImageUploadField({ value, onChange, maxSize = 5 }: ImageUploadFi
     setIsUploading(true);
     
     try {
-      const supabase = createClient();
-      
-      // Generate filename
-      const timestamp = Date.now();
-      const random = Math.random().toString(36).substring(7);
-      const ext = file.name.split('.').pop();
-      const filename = `templates/${timestamp}-${random}.${ext}`;
-      
-      // Upload
-      const { data, error } = await supabase.storage
-        .from('templates')
-        .upload(filename, file, {
-          cacheControl: '3600',
-          upsert: false,
-        });
-      
-      if (error) throw error;
-      
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('templates')
-        .getPublicUrl(filename);
-      
-      onChange(publicUrl);
-      toast.success('Image uploaded!');
+      // Convert to base64 data URL (works without backend)
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target?.result as string;
+        onChange(dataUrl);
+        toast.success('Image loaded!');
+        setIsUploading(false);
+      };
+      reader.onerror = () => {
+        toast.error('Failed to read image');
+        setIsUploading(false);
+      };
+      reader.readAsDataURL(file);
       
     } catch (error: any) {
       console.error('Upload error:', error);
       toast.error(error.message || 'Upload failed');
-    } finally {
       setIsUploading(false);
+    } finally {
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
